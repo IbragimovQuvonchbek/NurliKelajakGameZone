@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 
-{% block title %}{{ game.name }} Leaderboard{% endblock %}
+{% block title %}{{ game.name }} Leaderboard | Nurli Kelajak Game Zone{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -28,7 +28,7 @@
     .play-again-btn {
         padding: 0.75rem 1.5rem;
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        color: white;
+        color: var(--accent-color);
         border-radius: 50px;
         font-weight: 600;
         text-decoration: none;
@@ -37,18 +37,20 @@
 
     .play-again-btn:hover {
         transform: translateY(-2px);
-        box-shadow: var(--hover-shadow);
+        box-shadow: var(--card-shadow);
     }
 
     .leaderboard-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        background: var(--accent-color);
+        box-shadow: var(--card-shadow);
     }
 
     .leaderboard-table thead th {
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        color: white;
+        color: var(--accent-color);
         padding: 1rem;
         font-weight: 600;
         text-align: left;
@@ -114,47 +116,40 @@
 {% endblock %}
 
 {% block content %}
-<div class="container leaderboard-container">
-    <div class="leaderboard-header">
-        <h1 class="leaderboard-title">{{ game.name }} Leaderboard</h1>
-        <a href="{% url 'games:game_detail' game.slug %}" class="play-again-btn">
-            <i class="fas fa-redo me-1"></i> Play Again
-        </a>
+<div class="container my-5">
+    <h1 class="text-center mb-4">{{ game.name }} Leaderboard</h1>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {% if leaderboard %}
+                <table class="table leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Player</th>
+                            <th scope="col">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in leaderboard %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ entry.user__username }}</td>
+                                <td>{{ entry.max_score }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    No scores yet for {{ game.name }}. Be the first to play!
+                </div>
+            {% endif %}
+        </div>
     </div>
-
-    <div class="table-responsive">
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th>Score</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for score in scores %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ score.user.username }}</td>
-                    <td>{{ score.score|intcomma }}</td>
-                    <td>{{ score.created_at|date:"M d, Y" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">
-                        <div class="empty-message">
-                            <h4>No scores yet</h4>
-                            <p>Be the first to play and set a high score!</p>
-                            <a href="{% url 'games:game_detail' game.slug %}" class="play-again-btn">
-                                <i class="fas fa-play me-1"></i> Play Now
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="text-center mt-4">
+        <a href="{% url 'games:game_detail' game.slug %}" class="play-again-btn">
+            <i class="fas fa-redo me-2"></i>Play Again
+        </a>
     </div>
 </div>
 {% endblock %}

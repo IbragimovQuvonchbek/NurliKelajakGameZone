@@ -88,4 +88,18 @@
 
 <!-- JavaScript -->
 <script src="{% static 'games/js/math_challenge.js' %}"></script>
+<script>
+    document.getElementById('scoreForm').addEventListener('submit', function(event) {
+        const hiddenScore = document.getElementById('hiddenScore');
+        const finalScore = document.getElementById('finalScore').textContent;
+        console.log('Submitting score:', finalScore);
+        if (!finalScore || isNaN(parseInt(finalScore))) {
+            console.error('Invalid score value:', finalScore);
+            event.preventDefault();
+            alert('Error: Invalid score. Please try again.');
+            return;
+        }
+        hiddenScore.value = finalScore;
+    });
+</script>
 {% endblock %}

@@ -57,21 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         }, 1000);
 
-        // Handle form submission
-        elements.scoreForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                const response = await fetch(elements.scoreForm.action, {
-                    method: 'POST',
-                    body: new FormData(elements.scoreForm),
-                });
-                if (response.ok) {
-                    window.location.href = elements.scoreForm.action;
-                } else {
-                    alert('Failed to save score. Please try again.');
-                }
-            } catch (error) {
-                alert('Network error. Please check your connection and try again.');
+        // Validate score before submission
+        elements.scoreForm.addEventListener('submit', (e) => {
+            const score = parseInt(elements.hiddenScore.value);
+            console.log('Submitting score:', score);
+            if (isNaN(score) || score < 0) {
+                console.error('Invalid score value:', score);
+                e.preventDefault();
+                alert('Error: Invalid score. Please try again.');
             }
         });
     }
