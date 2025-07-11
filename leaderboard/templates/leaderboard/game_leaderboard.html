@@ -3,40 +3,158 @@
 
 {% block title %}{{ game.name }} Leaderboard{% endblock %}
 
+{% block extra_css %}
+<style>
+    .leaderboard-container {
+        padding: 3rem 0;
+    }
+
+    .leaderboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--background-color);
+    }
+
+    .leaderboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0;
+    }
+
+    .play-again-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .play-again-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .leaderboard-table thead th {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1rem;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .leaderboard-table th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    .leaderboard-table th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    .leaderboard-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .leaderboard-table tbody tr:hover {
+        background-color: var(--glow-color);
+    }
+
+    .leaderboard-table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--background-color);
+    }
+
+    /* Medal colors for top 3 positions */
+    .leaderboard-table tbody tr:nth-child(1) td:first-child::before {
+        content: "🥇";
+        margin-right: 0.5rem;
+    }
+
+    .leaderboard-table tbody tr:nth-child(2) td:first-child::before {
+        content: "🥈";
+        margin-right: 0.5rem;
+    }
+
+    .leaderboard-table tbody tr:nth-child(3) td:first-child::before {
+        content: "🥉";
+        margin-right: 0.5rem;
+    }
+
+    .empty-message {
+        text-align: center;
+        padding: 2rem;
+        background: var(--accent-color);
+        border-radius: 10px;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .leaderboard-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .leaderboard-title {
+            font-size: 1.75rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-12 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1>{{ game.name }} Leaderboard</h1>
-            <a href="{% url 'games:game_detail' game.slug %}" class="btn btn-primary">Play Again</a>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Score</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for score in scores %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ score.user.username }}</td>
-                        <td>{{ score.score|intcomma }}</td>
-                        <td>{{ score.created_at|date:"M d, Y" }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center">No scores yet. Be the first!</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="container leaderboard-container">
+    <div class="leaderboard-header">
+        <h1 class="leaderboard-title">{{ game.name }} Leaderboard</h1>
+        <a href="{% url 'games:game_detail' game.slug %}" class="play-again-btn">
+            <i class="fas fa-redo me-1"></i> Play Again
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in scores %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ score.user.username }}</td>
+                    <td>{{ score.score|intcomma }}</td>
+                    <td>{{ score.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-message">
+                            <h4>No scores yet</h4>
+                            <p>Be the first to play and set a high score!</p>
+                            <a href="{% url 'games:game_detail' game.slug %}" class="play-again-btn">
+                                <i class="fas fa-play me-1"></i> Play Now
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

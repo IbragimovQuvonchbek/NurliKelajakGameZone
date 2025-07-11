@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Game Leaderboards{% endblock %}
+
+{% block extra_css %}
+<style>
+    .leaderboards-container {
+        padding: 3rem 0;
+    }
+    
+    .leaderboards-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .leaderboards-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    
+    .leaderboards-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-color);
+        opacity: 0.8;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .game-card {
+        background: var(--accent-color);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+    
+    .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .game-card-image {
+        height: 180px;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .game-card-body {
+        padding: 1.5rem;
+    }
+    
+    .game-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .game-card-description {
+        color: var(--text-color);
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+    }
+    
+    .view-leaderboard-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .view-leaderboard-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    @media (max-width: 768px) {
+        .leaderboards-title {
+            font-size: 2rem;
+        }
+        
+        .leaderboards-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .games-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container leaderboards-container">
+    <div class="leaderboards-header">
+        <h1 class="leaderboards-title">Game Leaderboards</h1>
+        <p class="leaderboards-subtitle">See how you stack up against other players in our games</p>
+    </div>
+    
+    <div class="games-grid">
+        {% for game in games %}
+        <div class="game-card">
+            {% if game.image %}
+                <img src="{{ game.image.url }}" class="game-card-image" alt="{{ game.name }}">
+            {% else %}
+                <div class="game-card-image" style="background: var(--background-color); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-gamepad fa-3x" style="color: var(--primary-color);"></i>
+                </div>
+            {% endif %}
+            <div class="game-card-body">
+                <h3 class="game-card-title">{{ game.name }}</h3>
+                <p class="game-card-description">{{ game.description|truncatechars:100 }}</p>
+                <a href="{% url 'leaderboard:game_leaderboard' game.slug %}" class="view-leaderboard-btn">
+                    View Leaderboard
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No games available yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
