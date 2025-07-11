@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def leaderboards_home(request):
     games = Game.objects.filter(is_active=True)
-    return render(request, 'leaderboard/leaderboard_home.html', {
+    return render(request, 'leaderboard/leaderboards_home.html', {
         'games': games  # Changed from 'leaderboards' to 'games' to match template
     })
 

@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),  # For built-in auth views
+    path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('', include('games.urls')),
     path('leaderboard/', include('leaderboard.urls')),
