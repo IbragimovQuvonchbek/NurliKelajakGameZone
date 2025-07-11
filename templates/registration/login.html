@@ -57,6 +57,9 @@
     .form-group {
         margin-bottom: 1.75rem;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .form-label {
@@ -65,16 +68,19 @@
         font-weight: 500;
         color: #4a5568;
         font-size: 0.9375rem;
+        align-self: flex-start;
     }
 
     .form-control {
-        width: 100%;
-        padding: 0.875rem 1rem;
+        width: 80%;
+        max-width: 300px;
+        padding: 0.875rem 2.5rem 0.875rem 1rem;
         font-size: 1rem;
         border: 1px solid #e2e8f0;
         border-radius: 8px;
         transition: all 0.3s ease;
         background-color: #f8fafc;
+        margin: 0 auto;
     }
 
     .form-control:focus {
@@ -85,7 +91,8 @@
     }
 
     .auth-btn {
-        width: 100%;
+        width: 80%;
+        max-width: 300px;
         padding: 1rem;
         border: none;
         border-radius: 8px;
@@ -96,6 +103,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+        margin: 0 auto;
     }
 
     .auth-btn:hover {
@@ -124,9 +132,9 @@
 
     .input-icon {
         position: absolute;
-        right: 1rem;
+        right: calc(10% + 1rem);
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(10%);
         color: #a0aec0;
     }
 
@@ -136,6 +144,7 @@
         margin-top: 0.5rem;
         color: #e53e3e;
         font-size: 0.875rem;
+        text-align: center;
     }
 
     /* Responsive adjustments */
@@ -154,6 +163,15 @@
 
         .auth-body {
             padding: 2rem 1.5rem;
+        }
+
+        .form-control, .auth-btn {
+            width: 100%;
+            max-width: none;
+        }
+
+        .input-icon {
+            right: 1rem;
         }
     }
 
@@ -191,17 +209,33 @@
                     <label for="id_username" class="form-label">Username</label>
                     <input type="text" name="username" id="id_username" class="form-control" required autofocus>
                     <span class="input-icon"><i class="fas fa-user"></i></span>
+                    {% if form.username.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
 
                 <div class="form-group">
                     <label for="id_password" class="form-label">Password</label>
                     <input type="password" name="password" id="id_password" class="form-control" required>
                     <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    {% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
 
-                <button type="submit" class="auth-btn">
-                    <i class="fas fa-sign-in-alt me-2"></i> Login
-                </button>
+                <div class="form-group">
+                    <button type="submit" class="auth-btn">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                    </button>
+                </div>
 
                 <div class="auth-footer">
                     <p>Don't have an account? <a href="{% url 'accounts:signup' %}" class="auth-link">Sign up</a></p>
