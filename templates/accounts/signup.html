@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up | Nurli Kelajak Game Zone{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f6f9fc 0%, #eef2f5 100%);
+        padding: 2rem;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        background: var(--accent-color); /* White */
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 40px rgba(50,50,93,.15), 0 8px 20px rgba(0,0,0,.1);
+    }
+
+    .auth-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 2.5rem 2rem;
+        text-align: center;
+        color: var(--accent-color); /* White */
+    }
+
+    .auth-title {
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin: 0;
+        letter-spacing: -0.5px;
+    }
+
+    .auth-subtitle {
+        opacity: 0.9;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .auth-body {
+        padding: 2.5rem;
+        text-align: center; /* Center text for non-flex elements */
+    }
+
+    .form-group {
+        margin-bottom: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center inputs */
+        width: 100%;
+    }
+
+    .form-label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #4a5568;
+        font-size: 0.9375rem;
+    }
+
+    .form-control {
+        width: 90%; /* Limit width for centering */
+        max-width: 400px; /* Ensure consistency */
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color); /* #0038A8 */
+        box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.16); /* Blue shadow */
+        background-color: var(--accent-color); /* White */
+        outline: none;
+    }
+
+    .auth-btn {
+        width: 90%; /* Match input width */
+        max-width: 400px; /* Consistent with inputs */
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: var(--accent-color); /* White */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+        margin: 0 auto; /* Center button */
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: #718096;
+        font-size: 0.9375rem;
+    }
+
+    .auth-link {
+        color: var(--primary-color); /* #0038A8 */
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .auth-link:hover {
+        color: var(--secondary-color); /* #4C78D9 */
+        text-decoration: underline;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+    }
+
+    .helptext {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.8125rem;
+        color: #718096;
+        width: 90%; /* Match input width */
+        max-width: 400px; /* Consistent with inputs */
+    }
+
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin-top: 0.5rem;
+        color: #e53e3e;
+        font-size: 0.875rem;
+        width: 90%; /* Match input width */
+        max-width: 400px; /* Consistent with inputs */
+    }
+
+    .password-strength {
+        margin-top: 0.5rem;
+        height: 4px;
+        background: #e2e8f0;
+        border-radius: 2px;
+        overflow: hidden;
+        width: 90%; /* Match input width */
+        max-width: 400px; /* Consistent with inputs */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .password-strength-bar {
+        height: 100%;
+        width: 0%;
+        background: #e53e3e;
+        transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+        .auth-wrapper {
+            padding: 1rem;
+        }
+
+        .auth-card {
+            border-radius: 12px;
+        }
+
+        .auth-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .auth-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .form-control, .auth-btn, .helptext, .errorlist, .password-strength {
+            width: 100%; /* Full width on small screens */
+            max-width: 100%; /* Remove max-width constraint */
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-card {
+        animation: fadeIn 0.6s ease forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Join Our Community</h1>
+            <p class="auth-subtitle">Create your account to start playing</p>
+        </div>
+
+        <div class="auth-body">
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {{ field.label }}
+                        {% if field.field.required %}<span style="color: #e53e3e;">*</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <span class="helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="errorlist">{{ error }}</div>
+                    {% endfor %}
+                    {% if field.id_for_label == 'id_password1' %}
+                        <div class="password-strength">
+                            <div class="password-strength-bar"></div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus me-2"></i> Create Account
+                </button>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="{% url 'accounts:login' %}" class="auth-link">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple password strength indicator
+    document.getElementById('id_password1').addEventListener('input', function(e) {
+        const password = e.target.value;
+        const strengthBar = document.querySelector('.password-strength-bar');
+        const strengthContainer = document.querySelector('.password-strength');
+
+        if (!strengthBar || !strengthContainer) return;
+
+        let strength = 0;
+        if (password.length > 0) strength += 20;
+        if (password.length >= 8) strength += 30;
+        if (/[A-Z]/.test(password)) strength += 20;
+        if (/\d/.test(password)) strength += 20;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+
+        strengthBar.style.width = strength + '%';
+
+        if (strength < 40) {
+            strengthBar.style.background = '#e53e3e'; // Red
+        } else if (strength < 70) {
+            strengthBar.style.background = '#dd6b20'; // Orange
+        } else {
+            strengthBar.style.background = '#38a169'; // Green
+        }
+    });
+</script>
+{% endblock %}

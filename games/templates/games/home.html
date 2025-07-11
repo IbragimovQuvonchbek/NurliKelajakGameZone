@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Game Hub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4">Welcome to Nurli Kelajak Game Zone</h1>
+            <p class="lead">Choose a game to play and challenge your friends!</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for game in games %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="game-card card h-100 shadow-sm">
+                {% if game.image %}
+                    <img src="{{ game.image.url }}" class="game-card-img card-img-top" alt="{{ game.name }}">
+                {% else %}
+                    <div class="game-card-img-placeholder card-img-top bg-light d-flex align-items-center justify-content-center">
+                        <i class="fas fa-gamepad fa-4x text-muted"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h3 class="game-card-title card-title">{{ game.name }}</h3>
+                    <p class="game-card-description card-text flex-grow-1">{{ game.description }}</p>
+                    <a href="{% url 'games:game_detail' game.slug %}" class="btn btn-primary w-100 mt-auto">Play Now</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No games available yet. Check back soon!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
