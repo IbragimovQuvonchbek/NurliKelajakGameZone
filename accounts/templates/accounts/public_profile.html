@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block title %}{{ profile_user.username }}'s Profile | Nurli Kelajak Game Zone{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -62,14 +62,6 @@
         opacity: 0.8;
     }
 
-    .profile-bio {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: var(--text-color);
-        max-width: 600px;
-        margin-bottom: 2rem;
-    }
-
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -92,22 +84,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
-    /* Streak fire animation */
-    .stat-card[data-streak="true"]::after {
-        content: '🔥';
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        font-size: 1.2rem;
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-        100% { transform: scale(1); }
-    }
-
     .stat-value {
         font-size: 2.2rem;
         font-weight: 700;
@@ -123,6 +99,23 @@
         letter-spacing: 1px;
     }
 
+    /* Streak fire effect */
+    .stat-card[data-streak="true"]::after {
+        content: '🔥';
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        font-size: 1.2rem;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    /* Section styling */
     .section-title {
         font-size: 1.5rem;
         font-weight: 600;
@@ -143,7 +136,7 @@
         border-radius: 3px;
     }
 
-    /* Podium colors - same as public_profile */
+    /* Podium styling */
     .podium-container {
         background: white;
         border-radius: 16px;
@@ -198,8 +191,6 @@
         color: var(--text-color);
         text-align: center;
     }
-
-    /* Podium Colors - Matching public_profile.html */
     .podium-gold {
         height: 220px;
         background: linear-gradient(135deg, #FFD700, #FFC000);
@@ -222,9 +213,54 @@
         height: 120px;
         background: linear-gradient(135deg, #4CAF50, #2E7D32);
         box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+
+    /* Activity grid */
+    .game-activity {
+        margin-top: 3rem;
     }
 
-    /* Empty State Styling */
+    .activity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .activity-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .activity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .activity-game {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .activity-score {
+        font-size: 1.1rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .activity-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--text-color);
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
     .empty-state {
         text-align: center;
         padding: 4rem 2rem;
@@ -246,13 +282,7 @@
         margin-bottom: 1.5rem;
     }
 
-    /* Activity grid */
-    .activity-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-    }
-
+    /* Responsive adjustments */
     @media (max-width: 768px) {
         .profile-header {
             flex-direction: column;
@@ -264,6 +294,21 @@
             width: 150px;
             height: 150px;
             margin: 0 auto;
+        }
+
+        .profile-meta {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .podium {
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .podium-place {
+            width: 80%;
         }
 
         .stats-grid {
@@ -283,29 +328,19 @@
 <div class="profile-container">
     <div class="profile-header">
         <div class="avatar-container">
-            <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+            <img src="{% if profile_user.avatar %}{{ profile_user.avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
                  class="avatar-img"
-                 alt="{{ user.username }}'s avatar">
-            <div class="avatar-upload" onclick="document.getElementById('avatar-upload').click()">
-                <i class="fas fa-camera"></i>
-                <form id="avatar-form" method="post" enctype="multipart/form-data" action="{% url 'accounts:upload_avatar' %}">
-                    {% csrf_token %}
-                    <input type="file" id="avatar-upload" name="avatar" accept="image/*" style="display: none;">
-                </form>
-            </div>
+                 alt="{{ profile_user.username }}'s avatar">
         </div>
         <div class="profile-info">
-            <h1 class="profile-username">{{ user.username }}</h1>
+            <h1 class="profile-username">{{ profile_user.username }}</h1>
             <div class="profile-meta">
-                <span><i class="fas fa-calendar-alt me-2"></i> Member since {{ user.date_joined|date:"M Y" }}</span>
+                <span><i class="fas fa-calendar-alt me-2"></i> Joined {{ profile_user.date_joined|date:"M Y" }}</span>
                 <span><i class="fas fa-gamepad me-2"></i> {{ games_played_count|default:0 }} games played</span>
             </div>
-            {% if user.bio %}
-                <p class="profile-bio">{{ user.bio }}</p>
+            {% if profile_user.bio %}
+                <p class="profile-bio">{{ profile_user.bio }}</p>
             {% endif %}
-            <a href="{% url 'accounts:change_password' %}" class="btn btn-primary">
-                <i class="fas fa-key me-2"></i> Change Password
-            </a>
         </div>
     </div>
 
@@ -330,7 +365,7 @@
 
     {% if game_rankings %}
     <div class="podium-container">
-        <h2 class="section-title">Your Top Rankings</h2>
+        <h2 class="section-title">{{ profile_user.username }}'s Top Rankings</h2>
         <div class="podium">
             {% for ranking in game_rankings %}
             <div class="podium-place">
@@ -352,17 +387,20 @@
                 </div>
                 <div class="podium-game">{{ ranking.game__name }}</div>
                 <a href="{% url 'games:game_detail' ranking.game__slug %}" class="btn btn-sm btn-outline-primary mt-2">
-                    Play Again
+                    Play Game
                 </a>
             </div>
             {% endfor %}
         </div>
     </div>
     {% else %}
-    <div class="empty-state">
-        <i class="fas fa-trophy empty-icon"></i>
-        <h3>No Rankings Yet</h3>
-        <p class="empty-text">Play some games to appear on the leaderboards!</p>
+    <div class="podium-container">
+        <h2 class="section-title">{{ profile_user.username }}'s Top Rankings</h2>
+        <div class="empty-state">
+            <i class="fas fa-trophy empty-icon"></i>
+            <h3>No Rankings Yet</h3>
+            <p class="empty-text">Play some games to appear on the leaderboards!</p>
+        </div>
     </div>
     {% endif %}
 
@@ -376,7 +414,7 @@
                     <p class="activity-score">Score: {{ game.score|intcomma }}</p>
                     <div class="activity-meta">
                         <span><i class="fas fa-clock me-1"></i> {{ game.created_at|timesince }} ago</span>
-                        <a href="{% url 'games:game_detail' game.game.slug %}" class="btn btn-sm btn-outline-primary">
+                        <a href="{% url 'games:game_detail' game.game.slug %}" class="text-primary">
                             <i class="fas fa-redo me-1"></i> Replay
                         </a>
                     </div>
@@ -387,15 +425,9 @@
             <div class="empty-state">
                 <i class="fas fa-gamepad empty-icon"></i>
                 <h3>No Recent Activity</h3>
-                <p class="empty-text">Play some games to see your activity here!</p>
+                <p class="empty-text">Start playing games to see activity here!</p>
             </div>
         {% endif %}
     </div>
 </div>
-
-<script>
-    document.getElementById('avatar-upload').addEventListener('change', function() {
-        document.getElementById('avatar-form').submit();
-    });
-</script>
 {% endblock %}

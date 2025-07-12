@@ -11,5 +11,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('upload-avatar/', views.upload_avatar, name='upload_avatar'),
     path('change-password/', views.change_password, name='change_password'),
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
     # Add other auth URLs as needed
 ]

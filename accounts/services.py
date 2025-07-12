@@ -2,6 +2,7 @@ from django.db.models import Max, Count
 from games.models import GameScore
 
 
+# accounts/services.py
 def get_user_stats(user):
     # Basic counts
     games_played_count = GameScore.objects.filter(user=user).count()
@@ -9,9 +10,11 @@ def get_user_stats(user):
 
     # Get user's best scores per game with their global ranking
     game_rankings = []
-    for game_score in GameScore.objects.filter(user=user).values('game').annotate(
-            high_score=Max('score')
-    ):
+    user_scores = GameScore.objects.filter(user=user).values('game').annotate(
+        high_score=Max('score')
+    )
+
+    for game_score in user_scores:
         game_id = game_score['game']
         high_score = game_score['high_score']
 
