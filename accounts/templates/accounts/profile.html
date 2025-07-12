@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Profile - {{ user.username }}{% endblock %}
+{% block title %}Profil - {{ user.username }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -281,11 +281,12 @@
 
 {% block content %}
 <div class="profile-container">
+    <!-- Profile Header Section -->
     <div class="profile-header">
         <div class="avatar-container">
             <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
                  class="avatar-img"
-                 alt="{{ user.username }}'s avatar">
+                 alt="{{ user.username }} avatari">
             <div class="avatar-upload" onclick="document.getElementById('avatar-upload').click()">
                 <i class="fas fa-camera"></i>
                 <form id="avatar-form" method="post" enctype="multipart/form-data" action="{% url 'accounts:upload_avatar' %}">
@@ -297,49 +298,51 @@
         <div class="profile-info">
             <h1 class="profile-username">{{ user.username }}</h1>
             <div class="profile-meta">
-                <span><i class="fas fa-calendar-alt me-2"></i> Member since {{ user.date_joined|date:"M Y" }}</span>
-                <span><i class="fas fa-gamepad me-2"></i> {{ games_played_count|default:0 }} games played</span>
+                <span><i class="fas fa-calendar-alt me-2"></i> A'zo {{ user.date_joined|date:"M Y" }} dan</span>
+                <span><i class="fas fa-gamepad me-2"></i> {{ games_played_count|default:0 }} ta oʻyin</span>
             </div>
             {% if user.bio %}
                 <p class="profile-bio">{{ user.bio }}</p>
             {% endif %}
             <a href="{% url 'accounts:change_password' %}" class="btn btn-primary">
-                <i class="fas fa-key me-2"></i> Change Password
+                <i class="fas fa-key me-2"></i> Parolni oʻzgartirish
             </a>
         </div>
     </div>
 
+    <!-- Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-value">{{ games_played_count|default:0 }}</div>
-            <div class="stat-label">Games Played</div>
+            <div class="stat-label">Oʻyinlar soni</div>
         </div>
         <div class="stat-card">
             <div class="stat-value">{{ ranked_games_count|default:0 }}</div>
-            <div class="stat-label">Ranked Games</div>
+            <div class="stat-label">Reytingdagi oʻyinlar</div>
         </div>
         <div class="stat-card" {% if daily_streak > 0 %}data-streak="true"{% endif %}>
             <div class="stat-value">{{ daily_streak|default:0 }}</div>
-            <div class="stat-label">Day Streak</div>
+            <div class="stat-label">Kunlar ketma-ketligi</div>
         </div>
         <div class="stat-card">
             <div class="stat-value">{{ total_points|intcomma|default:0 }}</div>
-            <div class="stat-label">Total Points</div>
+            <div class="stat-label">Jami ballar</div>
         </div>
     </div>
 
+    <!-- Podium Section -->
     {% if game_rankings %}
     <div class="podium-container">
-        <h2 class="section-title">Your Top Rankings</h2>
+        <h2 class="section-title">Eng yaxshi natijalar</h2>
         <div class="podium">
             {% for ranking in game_rankings %}
             <div class="podium-place">
                 <div class="podium-rank">
                     {{ ranking.position }}<sup>
-                        {% if ranking.position == 1 %}st
-                        {% elif ranking.position == 2 %}nd
-                        {% elif ranking.position == 3 %}rd
-                        {% else %}th
+                        {% if ranking.position == 1 %}chi
+                        {% elif ranking.position == 2 %}nchi
+                        {% elif ranking.position == 3 %}nchi
+                        {% else %}nchi
                         {% endif %}
                     </sup>
                 </div>
@@ -352,7 +355,7 @@
                 </div>
                 <div class="podium-game">{{ ranking.game__name }}</div>
                 <a href="{% url 'games:game_detail' ranking.game__slug %}" class="btn btn-sm btn-outline-primary mt-2">
-                    Play Again
+                    Qayta oʻynash
                 </a>
             </div>
             {% endfor %}
@@ -361,23 +364,24 @@
     {% else %}
     <div class="empty-state">
         <i class="fas fa-trophy empty-icon"></i>
-        <h3>No Rankings Yet</h3>
-        <p class="empty-text">Play some games to appear on the leaderboards!</p>
+        <h3>Hozircha reyting yoʻq</h3>
+        <p class="empty-text">Reytingda koʻrinish uchun oʻyinlarda qatnashing!</p>
     </div>
     {% endif %}
 
+    <!-- Recent Activity Section -->
     <div class="game-activity">
-        <h2 class="section-title">Recent Activity</h2>
+        <h2 class="section-title">Soʻnggi faoliyat</h2>
         {% if recent_games %}
             <div class="activity-grid">
                 {% for game in recent_games %}
                 <div class="activity-card">
                     <h5 class="activity-game">{{ game.game.name }}</h5>
-                    <p class="activity-score">Score: {{ game.score|intcomma }}</p>
+                    <p class="activity-score">Ball: {{ game.score|intcomma }}</p>
                     <div class="activity-meta">
-                        <span><i class="fas fa-clock me-1"></i> {{ game.created_at|timesince }} ago</span>
+                        <span><i class="fas fa-clock me-1"></i> {{ game.created_at|timesince }} oldin</span>
                         <a href="{% url 'games:game_detail' game.game.slug %}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-redo me-1"></i> Replay
+                            <i class="fas fa-redo me-1"></i> Qayta oʻynash
                         </a>
                     </div>
                 </div>
@@ -386,8 +390,8 @@
         {% else %}
             <div class="empty-state">
                 <i class="fas fa-gamepad empty-icon"></i>
-                <h3>No Recent Activity</h3>
-                <p class="empty-text">Play some games to see your activity here!</p>
+                <h3>Soʻnggi faoliyat yoʻq</h3>
+                <p class="empty-text">Faoliyatingizni koʻrish uchun oʻyinlarda qatnashing!</p>
             </div>
         {% endif %}
     </div>

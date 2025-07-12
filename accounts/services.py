@@ -1,8 +1,7 @@
-from django.db.models import Max, Count
+from django.db.models import Sum, Max, Count
 from games.models import GameScore
 
 
-# accounts/services.py
 def get_user_stats(user):
     # Basic counts
     games_played_count = GameScore.objects.filter(user=user).count()
@@ -48,6 +47,6 @@ def get_user_stats(user):
     return {
         'games_played_count': games_played_count,
         'ranked_games_count': ranked_games_count,
-        'game_rankings': game_rankings[:5],  # Top 5 rankings
+        'game_rankings': game_rankings[:5],
         'recent_games': recent_games
     }

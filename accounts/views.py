@@ -36,7 +36,10 @@ def custom_logout(request):
 
 @login_required
 def profile(request):
-    stats = get_user_stats(request.user)
+    # Calculate total points (sum of all scores)
+    total_points = GameScore.objects.filter(user=request.user).aggregate(
+        total_points=Sum('score')
+    )['total_points'] or 0
 
     # Calculate daily streak
     streak = 0
@@ -46,10 +49,13 @@ def profile(request):
         streak += 1
         current_date -= timedelta(days=1)
 
+    stats = get_user_stats(request.user)
+
     context = {
         'games_played_count': stats['games_played_count'],
         'ranked_games_count': stats['ranked_games_count'],
         'daily_streak': streak,
+        'total_points': total_points,
         'game_rankings': stats['game_rankings'],
         'recent_games': stats['recent_games']
     }
