@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Leaderboards | Nurli Kelajak Game Zone{% endblock %}
+{% block title %}Reytinglar | Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -107,8 +107,8 @@
 {% block content %}
 <div class="container leaderboards-container">
     <div class="leaderboards-header">
-        <h1 class="leaderboards-title">Leaderboards</h1>
-        <p class="leaderboards-subtitle">See how you stack up against other players in our games</p>
+        <h1 class="leaderboards-title">Reytinglar</h1>
+        <p class="leaderboards-subtitle">Boshqa oʻyinchilar bilan solishtirganda oʻzingizning oʻrningizni koʻring</p>
     </div>
 
     <div class="games-grid">
@@ -125,13 +125,13 @@
                 <h3 class="game-card-title">{{ game.name }}</h3>
                 <p class="game-card-description">{{ game.description|truncatechars:100 }}</p>
                 <a href="{% url 'leaderboard:game_leaderboard' game_slug=game.slug %}" class="view-leaderboard-btn">
-                    View Leaderboard
+                    Reytinglarni koʻrish
                 </a>
             </div>
         </div>
         {% empty %}
         <div class="col-12 text-center">
-            <p>No games available yet. Check back soon!</p>
+            <p>Hozircha mavjud oʻyinlar yoʻq. Tez orada yana tekshiring!</p>
         </div>
         {% endfor %}
     </div>

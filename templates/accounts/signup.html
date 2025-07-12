@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up | Nurli Kelajak Game Zone{% endblock %}
+{% block title %}Roʻyxatdan oʻtish | Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -214,8 +214,8 @@
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
-            <h1 class="auth-title">Join Our Community</h1>
-            <p class="auth-subtitle">Create your account to start playing</p>
+            <h1 class="auth-title">Jamoamizga qoʻshiling</h1>
+            <p class="auth-subtitle">Oʻynashni boshlash uchun akkauntingizni yarating</p>
         </div>
 
         <div class="auth-body">
@@ -244,11 +244,11 @@
                 {% endfor %}
 
                 <button type="submit" class="auth-btn">
-                    <i class="fas fa-user-plus me-2"></i> Create Account
+                    <i class="fas fa-user-plus me-2"></i> Akkaunt yaratish
                 </button>
 
                 <div class="auth-footer">
-                    <p>Already have an account? <a href="{% url 'accounts:login' %}" class="auth-link">Login here</a></p>
+                    <p>Akkauntingiz bormi? <a href="{% url 'accounts:login' %}" class="auth-link">Kirish</a></p>
                 </div>
             </form>
         </div>

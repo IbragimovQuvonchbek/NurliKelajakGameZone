@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}{{ game.name }} Leaderboard | Nurli Kelajak Game Zone{% endblock %}
+{% block title %}{{ game.name }} Reytingi | Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -294,34 +294,34 @@
     <div class="leaderboard-header">
         <h1 class="leaderboard-title">
             {% if game.image %}
-                <img src="{{ game.image.url }}" class="game-icon" alt="{{ game.name }} icon">
+                <img src="{{ game.image.url }}" class="game-icon" alt="{{ game.name }} ikonkasi">
             {% endif %}
-            {{ game.name }} Leaderboard
+            {{ game.name }} Reytingi
         </h1>
         <div class="leaderboard-actions">
             <a href="{% url 'games:game_detail' game.slug %}" class="leaderboard-btn play-again-btn">
-                <i class="fas fa-redo"></i> Play Again
+                <i class="fas fa-redo"></i> Qayta Oʻynash
             </a>
             <a href="{% url 'leaderboard:leaderboards_home' %}" class="leaderboard-btn view-all-btn">
-                <i class="fas fa-trophy"></i> All Leaderboards
+                <i class="fas fa-trophy"></i> Barcha Reytinglar
             </a>
         </div>
     </div>
 
     <div class="time-filter-container">
-        <span class="time-filter-title">Filter by time period:</span>
+        <span class="time-filter-title">Vaqt oraligʻi boʻyicha filtrlash:</span>
         <div class="time-filter-options">
             <a href="?filter=all" class="time-filter-btn {% if active_filter == 'all' %}active{% endif %}">
-                All Time
+                Barcha vaqt
             </a>
             <a href="?filter=month" class="time-filter-btn {% if active_filter == 'month' %}active{% endif %}">
-                This Month
+                Bu oy
             </a>
             <a href="?filter=week" class="time-filter-btn {% if active_filter == 'week' %}active{% endif %}">
-                This Week
+                Bu hafta
             </a>
             <a href="?filter=day" class="time-filter-btn {% if active_filter == 'day' %}active{% endif %}">
-                Today
+                Bugun
             </a>
         </div>
     </div>
@@ -331,10 +331,10 @@
             <table class="leaderboard-table">
                 <thead>
                     <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Player</th>
-                        <th scope="col">Score</th>
-                        <th scope="col">Achieved On</th>
+                        <th scope="col">Oʻrin</th>
+                        <th scope="col">Oʻyinchi</th>
+                        <th scope="col">Ball</th>
+                        <th scope="col">Sana</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -348,19 +348,19 @@
                                     <a href="{% url 'accounts:user_profile' username=entry.user__username %}">
                                         <img src="{% if entry.user__avatar %}{{ entry.user__avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
                                              class="user-avatar"
-                                             alt="{{ entry.user__username }}'s avatar"
+                                             alt="{{ entry.user__username }} avatari"
                                              onerror="this.src='{% static 'images/default-avatar.png' %}'">
                                     </a>
                                     <a href="{% url 'accounts:user_profile' username=entry.user__username %}" class="username-link">
                                         {{ entry.user__username }}
                                         {% if entry.user__username == request.user.username %}
-                                            <span class="badge">You</span>
+                                            <span class="badge">Siz</span>
                                         {% endif %}
                                     </a>
                                 </div>
                             </td>
                             <td class="score-cell">{{ entry.max_score|intcomma }}</td>
-                            <td class="time-cell">{{ entry.latest_score_date|date:"M d, Y" }}</td>
+                            <td class="time-cell">{{ entry.latest_score_date|date:"d.m.Y" }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -368,10 +368,10 @@
         {% else %}
             <div class="empty-state">
                 <i class="fas fa-trophy empty-icon"></i>
-                <h3>No scores yet for {{ game.name }}</h3>
-                <p class="empty-text">Be the first to play and top the leaderboard!</p>
+                <h3>{{ game.name }} uchun hali ballar yoʻq</h3>
+                <p class="empty-text">Birinchi boʻlib oʻynang va reytingda birinchi boʻling!</p>
                 <a href="{% url 'games:game_detail' game.slug %}" class="leaderboard-btn play-again-btn">
-                    <i class="fas fa-gamepad"></i> Play Now
+                    <i class="fas fa-gamepad"></i> Hozir Oʻynash
                 </a>
             </div>
         {% endif %}
@@ -381,17 +381,17 @@
     <div class="pagination">
         <span class="step-links">
             {% if leaderboard.has_previous %}
-                <a href="?page=1&filter={{ active_filter }}" class="btn btn-outline-primary">&laquo; First</a>
-                <a href="?page={{ leaderboard.previous_page_number }}&filter={{ active_filter }}" class="btn btn-outline-primary">Previous</a>
+                <a href="?page=1&filter={{ active_filter }}" class="btn btn-outline-primary">&laquo; Birinchi</a>
+                <a href="?page={{ leaderboard.previous_page_number }}&filter={{ active_filter }}" class="btn btn-outline-primary">Oldingi</a>
             {% endif %}
 
             <span class="current">
-                Page {{ leaderboard.number }} of {{ leaderboard.paginator.num_pages }}
+                {{ leaderboard.number }}-sahifa, jami {{ leaderboard.paginator.num_pages }}
             </span>
 
             {% if leaderboard.has_next %}
-                <a href="?page={{ leaderboard.next_page_number }}&filter={{ active_filter }}" class="btn btn-outline-primary">Next</a>
-                <a href="?page={{ leaderboard.paginator.num_pages }}&filter={{ active_filter }}" class="btn btn-outline-primary">Last &raquo;</a>
+                <a href="?page={{ leaderboard.next_page_number }}&filter={{ active_filter }}" class="btn btn-outline-primary">Keyingi</a>
+                <a href="?page={{ leaderboard.paginator.num_pages }}&filter={{ active_filter }}" class="btn btn-outline-primary">Oxirgi &raquo;</a>
             {% endif %}
         </span>
     </div>

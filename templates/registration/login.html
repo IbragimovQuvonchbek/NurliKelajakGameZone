@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login | Nurli Kelajak Game Zone{% endblock %}
+{% block title %}Kirish | Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -191,14 +191,14 @@
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
-            <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-subtitle">Login to continue your gaming journey</p>
+            <h1 class="auth-title">Xush kelibsiz</h1>
+            <p class="auth-subtitle">Oʻyin dunyosiga kirish uchun tizimga kiring</p>
         </div>
 
         <div class="auth-body">
             {% if form.errors %}
             <div class="alert alert-danger" style="color: #e53e3e; background-color: #fff5f5; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #fed7d7;">
-                Your username and password didn't match. Please try again.
+                Foydalanuvchi nomi yoki parol notoʻgʻri. Iltimos, qayta urinib koʻring.
             </div>
             {% endif %}
 
@@ -206,7 +206,7 @@
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label for="id_username" class="form-label">Username</label>
+                    <label for="id_username" class="form-label">Foydalanuvchi nomi</label>
                     <input type="text" name="username" id="id_username" class="form-control" required autofocus>
                     <span class="input-icon"><i class="fas fa-user"></i></span>
                     {% if form.username.errors %}
@@ -219,7 +219,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="id_password" class="form-label">Password</label>
+                    <label for="id_password" class="form-label">Parol</label>
                     <input type="password" name="password" id="id_password" class="form-control" required>
                     <span class="input-icon"><i class="fas fa-lock"></i></span>
                     {% if form.password.errors %}
@@ -233,12 +233,12 @@
 
                 <div class="form-group">
                     <button type="submit" class="auth-btn">
-                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                        <i class="fas fa-sign-in-alt me-2"></i> Kirish
                     </button>
                 </div>
 
                 <div class="auth-footer">
-                    <p>Don't have an account? <a href="{% url 'accounts:signup' %}" class="auth-link">Sign up</a></p>
+                    <p>Akkauntingiz yoʻqmi? <a href="{% url 'accounts:signup' %}" class="auth-link">Roʻyxatdan oʻtish</a></p>
                 </div>
             </form>
         </div>
