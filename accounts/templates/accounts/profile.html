@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+    
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .avatar-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+    }
+    
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid var(--primary-color);
+    }
+    
+    .avatar-upload {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: var(--accent-color);
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .stat-label {
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+    
+    .podium {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 3rem 0;
+        align-items: flex-end;
+    }
+
+    .podium-place {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 120px;
+    }
+
+    .podium-rank {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .podium-platform {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+        padding: 1rem 0;
+    }
+
+    .podium-score {
+        font-size: 1.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .podium-game {
+        margin-top: 1rem;
+        font-weight: 600;
+    }
+
+    /* Podium Colors */
+    .podium-gold {
+        height: 180px;
+        background: linear-gradient(135deg, #FFD700, #D4AF37);
+    }
+
+    .podium-silver {
+        height: 140px;
+        background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+    }
+
+    .podium-bronze {
+        height: 120px;
+        background: linear-gradient(135deg, #CD7F32, #B08D57);
+    }
+
+    .podium-other {
+        height: 100px;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    }
+
+    .game-activity {
+        margin-top: 3rem;
+    }
+
+    .activity-card {
+        background: var(--accent-color);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .profile-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .podium {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .podium-place {
+            width: 80%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="avatar-container">
+            <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                 class="avatar-img"
+                 alt="{{ user.username }}'s avatar">
+            <div class="avatar-upload" onclick="document.getElementById('avatar-upload').click()">
+                <i class="fas fa-camera"></i>
+                <form id="avatar-form" method="post" enctype="multipart/form-data" action="{% url 'accounts:upload_avatar' %}">
+                    {% csrf_token %}
+                    <input type="file" id="avatar-upload" name="avatar" accept="image/*" style="display: none;">
+                </form>
+            </div>
+        </div>
+        <div>
+            <h1>{{ user.username }}</h1>
+            <p class="text-muted">Member since {{ user.date_joined|date:"M Y" }}</p>
+            <a href="{% url 'accounts:change_password' %}" class="btn btn-primary">
+                <i class="fas fa-key me-2"></i> Change Password
+            </a>
+        </div>
+    </div>
+
+    <div class="profile-stats">
+        <div class="stat-card">
+            <div class="stat-value">{{ games_played_count|default:"0" }}</div>
+            <div class="stat-label">Games Played</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ ranked_games_count|default:"0" }}</div>
+            <div class="stat-label">Ranked Games</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ daily_streak|default:"0" }}</div>
+            <div class="stat-label">Day Streak</div>
+        </div>
+    </div>
+
+    {% if game_rankings %}
+    <h2 class="text-center">Your Top Rankings</h2>
+    <div class="podium">
+        {% for ranking in game_rankings %}
+        <div class="podium-place">
+            <div class="podium-rank">
+                {{ ranking.position }}
+                <sup>
+                    {% if ranking.position == 1 %}st
+                    {% elif ranking.position == 2 %}nd
+                    {% elif ranking.position == 3 %}rd
+                    {% else %}th
+                    {% endif %}
+                </sup>
+            </div>
+            <div class="podium-platform
+                {% if ranking.position == 1 %}podium-gold
+                {% elif ranking.position == 2 %}podium-silver
+                {% elif ranking.position == 3 %}podium-bronze
+                {% else %}podium-other{% endif %}">
+                <div class="podium-score">{{ ranking.high_score }}</div>
+            </div>
+            <div class="podium-game">{{ ranking.game__name }}</div>
+            <a href="{% url 'games:game_detail' ranking.game__slug %}" class="btn btn-sm btn-outline-primary mt-2">
+                Play Again
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        No rankings yet. Play some games to appear on the leaderboard!
+    </div>
+    {% endif %}
+
+    <div class="game-activity">
+        <h2>Recent Activity</h2>
+        {% if recent_games %}
+            {% for game in recent_games %}
+            <div class="activity-card">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ game.game.name }}</h5>
+                        <p class="text-muted mb-1">Score: {{ game.score }}</p>
+                        <small class="text-muted">{{ game.created_at|timesince }} ago</small>
+                    </div>
+                    <div>
+                        <a href="{% url 'games:game_detail' game.game.slug %}" class="btn btn-primary">
+                            <i class="fas fa-redo me-1"></i> Replay
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                No game activity yet. Play some games to get started!
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('avatar-upload').addEventListener('change', function() {
+        document.getElementById('avatar-form').submit();
+    });
+</script>
+{% endblock %}

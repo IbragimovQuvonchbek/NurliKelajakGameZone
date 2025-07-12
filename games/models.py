@@ -1,9 +1,7 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings  # Use this instead of get_user_model()
 from django.utils.text import slugify
 import os
-
-User = get_user_model()
 
 
 def game_image_upload_path(instance, filename):
@@ -41,8 +39,8 @@ class Game(models.Model):
 
 
 class GameScore(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
     score = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
