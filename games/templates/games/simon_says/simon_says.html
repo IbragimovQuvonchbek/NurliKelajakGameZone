@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'games/css/simon_says.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="simon-game-container">
+    <!-- Loading Screen -->
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Simon Says Yuklanmoqda...</p>
+    </div>
+
+    <!-- Main Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="header">
+            <h1>Simon Says</h1>
+            <p class="subtitle">Ketma-ketlikni eslab qoling va takrorlang!</p>
+        </div>
+
+        <!-- Game Content Area -->
+        <div class="game-content">
+            <!-- Game Stats -->
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-label">Daraja</span>
+                    <span class="stat-value" id="level">1</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Ball</span>
+                    <span class="stat-value" id="score">0</span>
+                </div>
+                <div class="stat-box streak-box">
+                    <span class="stat-label">Rekord</span>
+                    <span class="stat-value" id="high-score">0</span>
+                </div>
+            </div>
+
+            <!-- Simon Board -->
+            <div class="simon-board">
+                <div class="color-btn red" id="red" data-color="red"></div>
+                <div class="color-btn blue" id="blue" data-color="blue"></div>
+                <div class="color-btn green" id="green" data-color="green"></div>
+                <div class="color-btn yellow" id="yellow" data-color="yellow"></div>
+                <div class="center-circle"></div>
+            </div>
+
+            <!-- Message Display -->
+            <div id="message" class="message"></div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button id="start-btn" class="action-btn">
+                    <i class="fas fa-play"></i> O'yinni Boshlash
+                </button>
+                <button id="strict-btn" class="action-btn">
+                    <i class="fas fa-exclamation-circle"></i> Qattiq Rejim: O'CHIRILGAN
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over" id="gameOver">
+            <div class="game-over-content">
+                <h2>O'yin Tugadi!</h2>
+                <p class="game-over-message" id="gameOverMessage"></p>
+                <div class="final-score">
+                    <span class="final-score-label">Yakuniy Ball:</span>
+                    <span class="final-score-value" id="finalScore">0</span>
+                </div>
+                <div class="game-over-buttons">
+                    <form id="scoreForm" method="post" action="{% url 'games:save_score' 'simon_says' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="score" id="hiddenScore" value="0">
+                        <button type="submit" class="action-btn btn-leaderboard">
+                            <i class="fas fa-trophy"></i> Reyting Jadvali
+                        </button>
+                    </form>
+                    <button class="action-btn btn-play-again" id="restartBtn">
+                        <i class="fas fa-redo"></i> Qayta O'ynash
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="{% static 'games/js/simon_says.js' %}"></script>
+{% endblock %}
