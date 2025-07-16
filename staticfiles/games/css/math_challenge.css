@@ -1,0 +1,416 @@
+/* Base Styles */
+:root {
+    --primary-color: #2563EB;
+    --secondary-color: #1E40AF;
+    --accent-color: #FFFFFF;
+    --background-color: #F8FAFC;
+    --text-color: #1F2937;
+    --correct-color: #10B981;
+    --wrong-color: #EF4444;
+    --glow-color: #BFDBFE;
+    --time-added-color: #0EA5E9;
+    --footer-color: #1E3A8A;
+    --card-shadow: 0 4px 6px rgba(37, 99, 235, 0.1);
+    --hover-shadow: 0 10px 15px rgba(37, 99, 235, 0.2);
+}
+
+
+/* Loading Screen */
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--accent-color); /* White */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 56, 168, 0.1); /* Blue-tinted border */
+    border-radius: 50%;
+    border-top: 4px solid var(--primary-color);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+.loading-text {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Game Container */
+.math-game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    background-color: var(--background-color);
+}
+
+.game-container {
+    background-color: var(--accent-color); /* White */
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--accent-color); /* White */
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+/* Game Content */
+.game-content {
+    padding: 1.5rem;
+}
+
+.progress-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #dee2e6; /* Neutral gray */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    width: 100%;
+    transition: width 0.3s linear;
+}
+
+.time-indicator {
+    position: absolute;
+    left: 10px;
+    top: -25px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+.mistakes-indicator {
+    position: absolute;
+    right: 10px;
+    top: -25px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+.time-feedback {
+    position: absolute;
+    font-size: 0.9rem;
+    color: var(--time-added-color);
+    opacity: 1;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.mistake-feedback {
+    position: absolute;
+    font-size: 0.9rem;
+    color: var(--wrong-color);
+    opacity: 1;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.stat-box {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 0.8rem;
+    flex: 1;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.3rem;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Equation */
+.equation-container {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.equation {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    min-height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.equation.glow {
+    background-color: var(--glow-color);
+    box-shadow: 0 0 15px var(--glow-color);
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 15px var(--glow-color); }
+    to { box-shadow: 0 0 25px var(--glow-color); }
+}
+
+.feedback-bubble {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.feedback-bubble.correct {
+    color: var(--correct-color);
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+.feedback-bubble.wrong {
+    color: var(--wrong-color);
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+.feedback-bubble.show {
+    opacity: 1;
+}
+
+/* Options */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.option {
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.option-correct {
+    background-color: var(--correct-color);
+    color: var(--accent-color); /* White */
+}
+
+.option-wrong {
+    background-color: var(--wrong-color);
+    color: var(--accent-color); /* White */
+}
+
+.option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 56, 168, 0.15); /* Blue-tinted shadow */
+}
+
+.option:active {
+    transform: translateY(0);
+}
+
+.option-icon {
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+/* Multiplier Indicator */
+.multiplier-indicator {
+    background-color: var(--secondary-color); /* Light blue */
+    color: var(--accent-color); /* White */
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.multiplier-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Game Over */
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--accent-color); /* White */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.game-over.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.game-over-content {
+    text-align: center;
+    max-width: 300px;
+}
+
+.game-over h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.game-over-message {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.final-score {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.final-score-label {
+    color: #6c757d;
+}
+
+.game-over-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.action-btn {
+    border: none;
+    border-radius: 50px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-leaderboard {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--accent-color); /* White */
+}
+
+.btn-play-again {
+    background-color: var(--accent-color); /* White */
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 56, 168, 0.15); /* Blue-tinted shadow */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .equation { font-size: 2.5rem; }
+    .option { padding: 0.8rem; font-size: 1.3rem; }
+    .time-indicator, .mistakes-indicator { font-size: 0.8rem; }
+}
+
+@media (max-width: 480px) {
+    .header { padding: 1rem; }
+    .header h1 { font-size: 1.5rem; }
+    .equation { font-size: 2rem; }
+    .option { padding: 0.6rem; font-size: 1.1rem; }
+    .stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .stat-box {
+        padding: 0.5rem;
+    }
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    .time-indicator, .mistakes-indicator {
+        font-size: 0.7rem;
+        top: -20px;
+        left: 5px;
+        right: 5px;
+    }
+}
