@@ -55,11 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.loading.style.opacity = '0';
             setTimeout(() => {
                 elements.loading.style.display = 'none';
+                elements.input.focus(); // Focus input field when game starts
             }, 500);
         }, 1000);
     }
 
     function resetGameState() {
+        clearIntervals();
+
         state = {
             score: 0,
             timeLeft: config.initialTime,
@@ -73,10 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPoints: 0,
             startTime: 0
         };
+
         elements.gameOver.classList.remove('active');
         elements.sequence.classList.remove('glow');
         elements.input.value = '';
-        clearIntervals();
+        elements.input.disabled = false;
+        elements.submit.disabled = false;
     }
 
     function clearIntervals() {
@@ -93,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUI();
 
             if (state.timeLeft <= 0) {
-                endGame('Time ran out!');
+                endGame('Vaqt tugadi!');
             }
         }, 1000);
     }
@@ -117,28 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUI() {
         elements.score.textContent = state.score;
         elements.timeIndicator.textContent = `${state.timeLeft}s`;
-        elements.mistakesIndicator.textContent = `Lives: ${config.maxMistakes - state.mistakes}/${config.maxMistakes}`;
+        elements.mistakesIndicator.textContent = `Jon: ${config.maxMistakes - state.mistakes}/${config.maxMistakes}`;
         elements.streak.textContent = state.currentStreak;
-    }
-
-    function showMistakeFeedback() {
-        const feedback = document.createElement('span');
-        feedback.className = 'mistake-feedback';
-        feedback.textContent = `Mistake ${state.mistakes}/${config.maxMistakes}`;
-        elements.mistakesIndicator.appendChild(feedback);
-
-        setTimeout(() => {
-            feedback.style.opacity = '0';
-            feedback.style.transform = 'translateY(-10px)';
-            setTimeout(() => feedback.remove(), 300);
-        }, 800);
     }
 
     function generateSequence() {
         if (state.isGameOver) return;
 
+        // Clear input field and focus it
+        elements.input.value = '';
+        elements.input.focus();
+
         state.isGlowing = Math.random() < config.glowChance;
         elements.sequence.classList.toggle('glow', state.isGlowing);
+        state.startTime = Date.now();
 
         const patterns = [
             // Arithmetic: +2
@@ -157,18 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
             () => {
                 const start = Math.floor(Math.random() * 10) + 1;
                 const sequence = [start, start + 5, start + 10, start + 15, start + 20];
-                return { sequence: sequence.slice(0, 4), answer: sequence[4], points: config.basePoints.arithmetic };
-            },
-            // Arithmetic: +6
-            () => {
-                const start = Math.floor(Math.random() * 10) + 1;
-                const sequence = [start, start + 6, start + 12, start + 18, start + 24];
-                return { sequence: sequence.slice(0, 4), answer: sequence[4], points: config.basePoints.arithmetic };
-            },
-            // Arithmetic: +10
-            () => {
-                const start = Math.floor(Math.random() * 10) + 1;
-                const sequence = [start, start + 10, start + 20, start + 30, start + 40];
                 return { sequence: sequence.slice(0, 4), answer: sequence[4], points: config.basePoints.arithmetic };
             },
             // Geometric: *2
@@ -205,6 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state.isGameOver) return;
 
         const userAnswer = parseInt(elements.input.value);
+        if (isNaN(userAnswer)) {
+            showFeedback('Iltimos, son kiriting!', false);
+            return;
+        }
+
         const elapsedTime = (Date.now() - state.startTime) / 1000;
 
         if (userAnswer === state.correctAnswer) {
@@ -212,8 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             handleWrongAnswer();
         }
-
-        setTimeout(generateSequence, 1000);
     }
 
     function handleCorrectAnswer(elapsedTime) {
@@ -222,22 +210,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         state.score += pointsEarned;
         state.currentStreak++;
-        state.timeLeft = config.initialTime; // Reset to 15s
+        state.timeLeft = config.initialTime;
         showFeedback(`+${pointsEarned}`, true);
         updateUI();
         updateProgressBar();
+
+        // Move to next question after delay
+        setTimeout(() => {
+            generateSequence();
+        }, 1000);
     }
 
     function handleWrongAnswer() {
         state.mistakes++;
         state.currentStreak = 0;
-        showMistakeFeedback();
-        showFeedback('Wrong!', false);
+        showFeedback(`Noto'g'ri!`, false);
         updateUI();
         updateProgressBar();
 
         if (state.mistakes >= config.maxMistakes) {
-            endGame('You made 3 mistakes!');
+            endGame('Siz 3 ta xato qildingiz!');
+        } else {
+            // Show same sequence again
+            setTimeout(() => {
+                elements.input.value = '';
+                elements.input.focus();
+            }, 1000);
         }
     }
 
@@ -268,8 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') checkAnswer();
     });
-    elements.restartBtn.addEventListener('click', initGame);
+
+    // Refresh page when Play Again button is clicked
+    elements.restartBtn.addEventListener('click', () => {
+        location.reload();
+    });
 
     // Start the game
-    window.addEventListener('load', initGame);
+    initGame();
 });

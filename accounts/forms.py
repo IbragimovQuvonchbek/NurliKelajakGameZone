@@ -7,7 +7,7 @@ from django import forms
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email')  # Add any other fields you want
+        fields = ('username',)  # Add any other fields you want
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
