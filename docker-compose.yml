@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile
     volumes:
       - static_data:/app/staticfiles
