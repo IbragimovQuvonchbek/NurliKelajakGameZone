@@ -1,3 +1,9 @@
-.idea
-.venv
-__pycache__
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.env
+venv/
+node_modules/
