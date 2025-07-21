@@ -1,21 +1,34 @@
 FROM python:3.9-slim
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# Create a non-root user
+RUN useradd -m appuser && \
+    mkdir -p /app && \
+    chown appuser:appuser /app
+
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc python3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
+# Copy only requirements first to leverage Docker cache
+COPY --chown=appuser:appuser requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy the rest of the application
+COPY --chown=appuser:appuser . .
 
-RUN python manage.py collectstatic --noinput
+# Run as non-root user
+USER appuser
+
+# Collect static files (if Django)
+RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE 8000
 
