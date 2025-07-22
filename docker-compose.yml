@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        USER_ID: ${UID:-1000}  # Pass host user ID
+        USER_ID: ${UID:-1000}
         GROUP_ID: ${GID:-1000}
     volumes:
       - ./:/app
@@ -17,20 +17,35 @@ services:
     expose:
       - "8000"
     restart: unless-stopped
-    user: "${UID:-1000}:${GID:-1000}"  # Run as host user
+    user: "${UID:-1000}:${GID:-1000}"
 
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_data:/app/staticfiles:ro
       - media_data:/app/media:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
     depends_on:
       - app
     restart: unless-stopped
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: >
+      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot
+      --email your-email@example.com --agree-tos --no-eff-email
+      -d nksgamezone.uz -d www.nksgamezone.uz && echo 'Certificate issued.'"
+
 volumes:
   static_data:
   media_data:
+  certbot-etc:
+  certbot-www:
