@@ -2,27 +2,25 @@
 
 EMAIL="1.quvonchbek.ibragimov@gmail.com"
 DOMAIN="nksgamezone.uz"
+DOMAINS="-d $DOMAIN -d www.$DOMAIN"
 
-echo "Starting nginx and app containers..."
-docker-compose up -d nginx app
+echo "🟢 Starting app and nginx..."
+docker-compose up -d app nginx
 
-echo "Waiting for nginx to be ready..."
+echo "⏳ Waiting for Nginx to be ready..."
 sleep 5
 
-echo "Requesting Let's Encrypt certificate with Certbot..."
-docker-compose run --rm certbot certonly \
-  --webroot \
-  --webroot-path=/var/www/certbot \
-  --email "$EMAIL" \
-  --agree-tos \
-  --no-eff-email \
-  --non-interactive \
-  -d "$DOMAIN" -d "www.$DOMAIN"
+echo "🔐 Requesting SSL certificate from Let's Encrypt..."
+docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot \
+  --email $EMAIL --agree-tos --no-eff-email $DOMAINS
 
 if [ $? -eq 0 ]; then
-  echo "Certificate obtained successfully!"
+  echo "✅ Certificate obtained successfully!"
+  echo "🔄 Restarting nginx..."
   docker-compose restart nginx
 else
-  echo "Failed to obtain certificate. Please check the logs."
+  echo "❌ Failed to obtain certificate. Check logs."
   exit 1
 fi
+
+echo "✅ DONE: https://$DOMAIN is now secured with SSL!"
