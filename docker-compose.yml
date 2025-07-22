@@ -8,11 +8,12 @@ services:
         USER_ID: ${UID:-1000}
         GROUP_ID: ${GID:-1000}
     volumes:
-      - .:/app
+      - ./:/app
       - static_data:/app/staticfiles
       - media_data:/app/media
     environment:
       - DEBUG=False
+      - PYTHONUNBUFFERED=1
     expose:
       - "8000"
     restart: unless-stopped
