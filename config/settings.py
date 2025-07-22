@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-ejow05qe0j*-x1xwx3vi)b&yr!1sx0p6g!ulu2xmr0*8(0qwas
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['nksgamezone.uz', 'www.nksgamezone.uz']
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,9 +47,6 @@ INSTALLED_APPS = [
 
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = 'games:home'
 LOGOUT_REDIRECT_URL = 'games:home'
@@ -63,6 +63,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://nksgamezone.uz",
+    "https://www.nksgamezone.uz"
+]
 
 TEMPLATES = [
     {
@@ -134,3 +139,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
