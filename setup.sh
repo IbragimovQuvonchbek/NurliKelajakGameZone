@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EMAIL="1.quvonchbek.ibragimov@gmail.com"
+EMAIL="testlinux659@gmail.com"
 DOMAIN="nksgamezone.uz"
 DOMAINS="-d $DOMAIN -d www.$DOMAIN"
 
