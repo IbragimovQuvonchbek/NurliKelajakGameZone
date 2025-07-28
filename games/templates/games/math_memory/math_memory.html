@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'games/css/math_memory.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="math-memory-container">
+    <!-- Loading Screen -->
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Matematik Xotira O'yini Yuklanmoqda...</p>
+    </div>
+
+    <!-- Main Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="header">
+            <h1>🧠 Matematik Xotira O'yini</h1>
+            <p class="subtitle">Matematik ifodalarni ularning javoblari bilan moslang!</p>
+        </div>
+
+        <!-- Game Stats -->
+        <div class="stats">
+            <div class="stat-box">
+                <span class="stat-label">⏱ Qolgan vaqt</span>
+                <span class="stat-value" id="timer">180</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">🔢 Ball</span>
+                <span class="stat-value" id="score">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">🏆 Rekord</span>
+                <span class="stat-value" id="high-score">0</span>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div id="game-board" class="game-board"></div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="start-btn" class="action-btn">
+                <i class="fas fa-play"></i> O'yinni Boshlash
+            </button>
+            <button id="restart-btn" class="action-btn">
+                <i class="fas fa-redo"></i> Qayta Boshlash
+            </button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over" id="gameOver">
+            <div class="game-over-content">
+                <h2>O'yin Tugadi!</h2>
+                <p class="game-over-message" id="gameOverMessage"></p>
+                <div class="final-score">
+                    <span class="final-score-label">Yakuniy Ball:</span>
+                    <span class="final-score-value" id="finalScore">0</span>
+                </div>
+                <div class="game-over-buttons">
+                    <form id="scoreForm" method="post" action="{% url 'games:save_score' 'math_memory' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="score" id="hiddenScore" value="0">
+                        <button type="submit" class="action-btn btn-leaderboard">
+                            <i class="fas fa-trophy"></i> Reyting Jadvali
+                        </button>
+                    </form>
+                    <button class="action-btn btn-play-again" id="playAgainBtn">
+                        <i class="fas fa-redo"></i> Qayta O'ynash
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="{% static 'games/js/math_memory.js' %}"></script>
+{% endblock %}
