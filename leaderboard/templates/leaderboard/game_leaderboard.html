@@ -346,10 +346,10 @@
                             <td>
                                 <div class="user-cell">
                                     <a href="{% url 'accounts:user_profile' username=entry.user__username %}">
-                                        <img src="{% if entry.user__avatar %}{{ entry.user__avatar.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                                        <img src="{% if entry.user__avatar %}{{ entry.user__avatar.url }}{% else %}/media/avatars/avatar.png{% endif %}"
                                              class="user-avatar"
                                              alt="{{ entry.user__username }} avatari"
-                                             onerror="this.src='{% static 'images/default-avatar.png' %}'">
+                                             onerror="this.src='/media/avatars/avatar.png'">
                                     </a>
                                     <a href="{% url 'accounts:user_profile' username=entry.user__username %}" class="username-link">
                                         {{ entry.user__username }}

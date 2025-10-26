@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Umumiy Reyting | Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
+
+{% block extra_css %}
+<style>
+    .leaderboard-container {
+        padding: 2rem 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .leaderboard-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--background-color);
+    }
+
+    .leaderboard-title {
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 700;
+        background: var(--background-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .trophy-icon {
+        font-size: 2.5rem;
+        background: var(--background-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Time Filter Styles */
+    .time-filter-container {
+        background: var(--accent-color);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .time-filter-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+
+    .time-filter-options {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .time-filter-btn {
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        font-weight: 600;
+        border: 2px solid transparent;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-color);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .time-filter-btn:hover {
+        background: var(--background-color);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+    .time-filter-btn.active {
+        background: var(--background-gradient);
+        color: var(--accent-color);
+        border-color: transparent;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-table-container {
+        background: var(--accent-color);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        overflow-x: auto;
+    }
+
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .leaderboard-table thead th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--background-color);
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.5px;
+    }
+
+    .leaderboard-table tbody tr {
+        border-bottom: 1px solid var(--background-color);
+        transition: all 0.3s ease;
+    }
+
+    .leaderboard-table tbody tr:hover {
+        background: rgba(99, 102, 241, 0.05);
+        transform: translateX(5px);
+    }
+
+    .leaderboard-table tbody tr.current-user {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .leaderboard-table tbody td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+    }
+
+    .rank-cell {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text-light);
+        width: 80px;
+    }
+
+    .rank-cell.rank-1 {
+        color: #FFD700;
+        font-size: 1.5rem;
+    }
+
+    .rank-cell.rank-2 {
+        color: #C0C0C0;
+        font-size: 1.5rem;
+    }
+
+    .rank-cell.rank-3 {
+        color: #CD7F32;
+        font-size: 1.5rem;
+    }
+
+    .user-cell {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-color);
+        transition: all 0.3s ease;
+    }
+
+    .user-cell:hover .user-avatar {
+        border-color: var(--secondary-color);
+        transform: scale(1.1);
+    }
+
+    .username-link {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .username-link:hover {
+        color: var(--primary-color);
+    }
+
+    .badge {
+        background: var(--background-gradient);
+        color: var(--accent-color);
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .score-cell {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--primary-color);
+    }
+
+    .time-cell {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-light);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+
+    .empty-text {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .leaderboard-title {
+            font-size: 1.5rem;
+        }
+
+        .trophy-icon {
+            font-size: 2rem;
+        }
+
+        .leaderboard-table-container {
+            padding: 1rem;
+        }
+
+        .leaderboard-table {
+            font-size: 0.875rem;
+        }
+
+        .leaderboard-table thead th {
+            padding: 0.75rem 0.5rem;
+        }
+
+        .leaderboard-table tbody td {
+            padding: 1rem 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+        }
+
+        .rank-cell {
+            width: 50px;
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="leaderboard-container">
+    <div class="leaderboard-header">
+        <h1 class="leaderboard-title">
+            <i class="fas fa-trophy trophy-icon"></i>
+            Umumiy Reyting
+        </h1>
+    </div>
+
+    <!-- Time Filter -->
+    <div class="time-filter-container">
+        <span class="time-filter-title">
+            <i class="fas fa-filter me-2"></i>Vaqt oraligʻi:
+        </span>
+        <div class="time-filter-options">
+            <a href="?filter=all" class="time-filter-btn {% if active_filter == 'all' %}active{% endif %}">
+                Hammasi
+            </a>
+            <a href="?filter=month" class="time-filter-btn {% if active_filter == 'month' %}active{% endif %}">
+                Oy
+            </a>
+            <a href="?filter=week" class="time-filter-btn {% if active_filter == 'week' %}active{% endif %}">
+                Hafta
+            </a>
+            <a href="?filter=day" class="time-filter-btn {% if active_filter == 'day' %}active{% endif %}">
+                Bugun
+            </a>
+        </div>
+    </div>
+
+    <div class="leaderboard-table-container">
+        {% if leaderboard %}
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Oʻrin</th>
+                        <th scope="col">Oʻyinchi</th>
+                        <th scope="col">Jami ball</th>
+                        <th scope="col">Oxirgi oʻyin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in leaderboard %}
+                        <tr {% if entry.user__username == request.user.username %}class="current-user"{% endif %}>
+                            <td class="rank-cell {% if forloop.counter == 1 %}rank-1{% elif forloop.counter == 2 %}rank-2{% elif forloop.counter == 3 %}rank-3{% endif %}">
+                                {% if forloop.counter == 1 %}
+                                    <i class="fas fa-medal"></i>
+                                {% elif forloop.counter == 2 %}
+                                    <i class="fas fa-medal"></i>
+                                {% elif forloop.counter == 3 %}
+                                    <i class="fas fa-medal"></i>
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="user-cell">
+                                    <a href="{% url 'accounts:user_profile' username=entry.user__username %}">
+                                        <img src="{% if entry.user__avatar %}{{ entry.user__avatar.url }}{% else %}/media/avatars/avatar.png{% endif %}"
+                                             class="user-avatar"
+                                             alt="{{ entry.user__username }} avatari"
+                                             onerror="this.src='/media/avatars/avatar.png'">
+                                    </a>
+                                    <a href="{% url 'accounts:user_profile' username=entry.user__username %}" class="username-link">
+                                        {{ entry.user__username }}
+                                        {% if entry.user__username == request.user.username %}
+                                            <span class="badge">Siz</span>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="score-cell">{{ entry.total_score|intcomma }}</td>
+                            <td class="time-cell">{{ entry.last_played|date:"d.m.Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-trophy empty-icon"></i>
+                <h3>Hozircha reyting yoʻq</h3>
+                <p class="empty-text">Reytingda koʻrinish uchun oʻyinlarda qatnashing!</p>
+                <a href="{% url 'games:home' %}" class="btn btn-primary">
+                    <i class="fas fa-gamepad me-2"></i>Oʻyinlarga oʻtish
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

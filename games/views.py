@@ -35,6 +35,16 @@ def save_score(request, game_slug):
                 score=score
             )
             logger.info(f"Score {score} saved for game {game_slug}, user {request.user.username}")
+            
+            # Check and unlock achievements
+            try:
+                from accounts.services import check_and_unlock_achievements
+                unlocked = check_and_unlock_achievements(request.user, score=score)
+                if unlocked:
+                    logger.info(f"User {request.user.username} unlocked {len(unlocked)} achievements")
+            except Exception as e:
+                logger.error(f"Error checking achievements: {str(e)}")
+            
             return redirect('leaderboard:game_leaderboard', game_slug=game_slug)
         except (ValueError, Game.DoesNotExist) as e:
             logger.error(f"Error saving score for game {game_slug}, user {request.user.username}: {str(e)}")

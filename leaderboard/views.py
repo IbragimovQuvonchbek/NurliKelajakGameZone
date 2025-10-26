@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Max
+from django.db.models import Max, Sum
 from games.models import Game, GameScore
 import logging
 from datetime import datetime, timedelta
@@ -12,6 +12,41 @@ def leaderboards_home(request):
     games = Game.objects.filter(is_active=True)
     return render(request, 'leaderboard/leaderboards_home.html', {
         'games': games  # Changed from 'leaderboards' to 'games' to match template
+    })
+
+
+def total_leaderboard(request):
+    """Display total leaderboard showing users ranked by their total points across all games"""
+    
+    # Get filter parameter from request
+    time_filter = request.GET.get('filter', 'all')
+    
+    # Base queryset
+    queryset = GameScore.objects.all()
+    
+    # Apply time filters
+    today = timezone.now().date()
+    if time_filter == 'month':
+        first_day = today.replace(day=1)
+        queryset = queryset.filter(created_at__gte=first_day)
+    elif time_filter == 'week':
+        monday = today - timedelta(days=today.weekday())
+        queryset = queryset.filter(created_at__gte=monday)
+    elif time_filter == 'day':
+        queryset = queryset.filter(created_at__date=today)
+    
+    # Get total leaderboard - sum of all scores for each user
+    leaderboard = queryset.values(
+        'user__username',
+        'user__avatar'
+    ).annotate(
+        total_score=Sum('score'),
+        last_played=Max('created_at')
+    ).order_by('-total_score')[:100]
+    
+    return render(request, 'leaderboard/total_leaderboard.html', {
+        'leaderboard': leaderboard,
+        'active_filter': time_filter
     })
 
 

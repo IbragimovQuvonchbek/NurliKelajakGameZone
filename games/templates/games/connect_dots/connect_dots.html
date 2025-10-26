@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Nuqtalarni Birlashtirish - Nurli Kelajak{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'games/css/connect_dots.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <div class="game-header">
+        <h1><i class="fas fa-project-diagram"></i> Nuqtalarni Birlashtirish</h1>
+        <p class="game-description">Raqamli nuqtalarni ketma-ket bog'lab, rasmlar hosil qiling!</p>
+    </div>
+
+    <div class="game-info-bar">
+        <div class="info-item">
+            <i class="fas fa-clock"></i>
+            <span>Vaqt: <span id="timer">00:00</span></span>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-mouse-pointer"></i>
+            <span>Harakatlar: <span id="moves">0</span></span>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-star"></i>
+            <span>Ball: <span id="score">0</span></span>
+        </div>
+        <button id="newGameBtn" class="btn btn-primary">
+            <i class="fas fa-redo"></i> Yangi O'yin
+        </button>
+    </div>
+
+    <div class="difficulty-selector">
+        <label>Qiyinlik:</label>
+        <select id="difficulty" class="form-select">
+            <option value="easy">Oson (16 nuqta)</option>
+            <option value="medium" selected>O'rtacha (25 nuqta)</option>
+            <option value="hard">Qiyin (36 nuqta)</option>
+        </select>
+        <button id="startGameBtn" class="btn btn-success">
+            <i class="fas fa-play"></i> Boshlash
+        </button>
+    </div>
+
+    <div class="game-area">
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameOverScreen" class="game-over-screen hidden">
+            <div class="game-over-content">
+                <h2>🎉 Tabriklaymiz!</h2>
+                <p class="completion-message">Siz barcha nuqtalarni muvaffaqiyatli bog'ladingiz!</p>
+                <div class="final-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>Vaqt: <span id="finalTime"></span></span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <span>Harakatlar: <span id="finalMoves"></span></span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Ball: <span id="finalScore"></span></span>
+                    </div>
+                </div>
+                <button id="submitScoreBtn" class="btn btn-primary btn-lg">
+                    <i class="fas fa-trophy"></i> Natijani Saqlash
+                </button>
+                <button id="playAgainBtn" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-redo"></i> Qayta O'ynash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-instructions">
+        <h3><i class="fas fa-info-circle"></i> Qo'llanma</h3>
+        <ul>
+            <li>Raqamli nuqtalarni 1 dan boshlab ketma-ket bog'lang</li>
+            <li>Barcha nuqtalarni bog'laganingizda rasm yuzaga keladi</li>
+            <li>Kam vaqt va harakatlar bilan yechsangiz, ko'proq ball olasiz</li>
+        </ul>
+    </div>
+</div>
+
+<script src="{% static 'games/js/connect_dots.js' %}"></script>
+{% endblock %}

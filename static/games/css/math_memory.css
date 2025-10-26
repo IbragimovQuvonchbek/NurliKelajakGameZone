@@ -1,19 +1,5 @@
-/* Base Styles */
-:root {
-    --primary-color: #3498db;
-    --primary-dark: #2980b9;
-    --secondary-color: #2ecc71;
-    --secondary-dark: #27ae60;
-    --accent-color: #ffffff;
-    --background-color: #f8f9fa;
-    --text-color: #2c3e50;
-    --text-light: #7f8c8d;
-    --correct-color: #2ecc71;
-    --wrong-color: #e74c3c;
-    --warning-color: #f39c12;
-    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+/* Using base styles from main styles.css */
+/* Primary colors now match the site theme */
 
 .math-memory-container {
     min-height: 100vh;
@@ -41,9 +27,9 @@
 }
 
 .loading-spinner {
-    border: 5px solid rgba(52, 152, 219, 0.2);
+    border: 5px solid rgba(99, 102, 241, 0.2);
     border-radius: 50%;
-    border-top: 5px solid var(--primary-color);
+    border-top: 5px solid #6366F1;
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
@@ -67,7 +53,7 @@
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(135deg, #6366F1 0%, #764BA2 100%);
     color: var(--accent-color);
     padding: 20px;
     text-align: center;

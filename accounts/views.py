@@ -50,6 +50,10 @@ def profile(request):
         current_date -= timedelta(days=1)
 
     stats = get_user_stats(request.user)
+    
+    # Get user achievements
+    from .models import UserAchievement
+    user_achievements = UserAchievement.objects.filter(user=request.user).select_related('achievement')
 
     context = {
         'games_played_count': stats['games_played_count'],
@@ -57,7 +61,8 @@ def profile(request):
         'daily_streak': streak,
         'total_points': total_points,
         'game_rankings': stats['game_rankings'],
-        'recent_games': stats['recent_games']
+        'recent_games': stats['recent_games'],
+        'achievements': user_achievements
     }
     return render(request, 'accounts/profile.html', context)
 
@@ -111,6 +116,10 @@ def user_profile(request, username):
 
         # Get other stats from service
         stats = get_user_stats(profile_user)
+        
+        # Get user achievements
+        from .models import UserAchievement
+        user_achievements = UserAchievement.objects.filter(user=profile_user).select_related('achievement')
 
         context = {
             'profile_user': profile_user,
@@ -120,6 +129,7 @@ def user_profile(request, username):
             'total_points': total_points,
             'game_rankings': stats['game_rankings'],
             'recent_games': stats['recent_games'],
+            'achievements': user_achievements,
             'is_own_profile': (request.user == profile_user)
         }
 
