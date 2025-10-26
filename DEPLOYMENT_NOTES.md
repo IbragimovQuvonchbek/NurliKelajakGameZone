@@ -58,8 +58,8 @@ You should see files like:
 
 ## Changes Made
 
-1. **Settings Updated**: Changed from `WhiteNoise` to Django's `ManifestStaticFilesStorage` for better cache busting
-2. **Static URL Hashing**: Now Django automatically appends hash to static file URLs
+1. **Settings Updated**: Removed invalid middleware reference
+2. **Static URL Hashing**: Using Django's `ManifestStaticFilesStorage` for cache busting
 3. **Deployment Script**: Created `deploy_static.sh` for easy deployment
 
 ## Why This Works
