@@ -17,9 +17,27 @@ class ConnectDotsGame {
         this.isGameActive = false;
         this.gameComplete = false;
         
+        // Get CSRF token from page
+        this.csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || this.getCookie('csrftoken');
+        
         this.setupEventListeners();
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
+    }
+    
+    getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 
     setupEventListeners() {
@@ -298,47 +316,41 @@ class ConnectDotsGame {
     submitScore() {
         if (!this.gameComplete) return;
         
-        // Get CSRF token from form or cookie
-        let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-        if (!csrfToken) {
-            // Try to get from cookies
-            const name = 'csrftoken';
-            const value = '; ' + document.cookie;
-            const parts = value.split('; ' + name + '=');
-            if (parts.length === 2) {
-                csrfToken = { value: parts.pop().split(';').shift() };
-            }
-        }
-        
-        if (!csrfToken || !csrfToken.value) {
+        if (!this.csrfToken) {
             console.error('CSRF token not found');
-            alert('Xavfsizlik muammosi! Qayta yuklang.');
+            const gameOverMessage = document.querySelector('.completion-message');
+            if (gameOverMessage) {
+                gameOverMessage.innerHTML = '<i class="fas fa-exclamation-circle text-warning"></i> Xavfsizlik muammosi! Qayta yuklang.';
+            }
             return;
         }
         
         const formData = new FormData();
         formData.append('score', this.score);
-        formData.append('csrfmiddlewaretoken', csrfToken.value);
+        formData.append('csrfmiddlewaretoken', this.csrfToken);
         
-        console.log('Submitting score:', this.score);
+        console.log('Submitting score:', this.score, 'to', window.location.pathname + 'save-score/');
         
         fetch(window.location.pathname + 'save-score/', {
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRFToken': csrfToken.value
-            },
-            credentials: 'same-origin'
+                'X-CSRFToken': this.csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         })
         .then(response => {
             console.log('Response status:', response.status);
             if (response.redirected) {
+                // Server redirected to leaderboard
                 window.location.href = response.url;
+                return;
             } else if (response.ok) {
                 return response.json();
             } else {
                 return response.text().then(text => {
-                    throw new Error(`Server error: ${text}`);
+                    console.error('Server error response:', text);
+                    throw new Error(`Server error: ${response.status}`);
                 });
             }
         })
@@ -358,7 +370,7 @@ class ConnectDotsGame {
                 leaderboardBtn.className = 'btn btn-success btn-lg mt-3';
                 leaderboardBtn.innerHTML = '<i class="fas fa-trophy"></i> Reytingni Ko\'rish';
                 leaderboardBtn.onclick = () => {
-                    window.location.href = window.location.pathname.replace(/\/$/, '').replace(/\/games\/[^/]+\//, '/leaderboard/games/connect_dots/');
+                    window.location.href = '/leaderboard/games/connect_dots/';
                 };
                 playAgainBtn.parentNode.appendChild(leaderboardBtn);
             }
