@@ -26,7 +26,6 @@ class ConnectDotsGame {
         document.getElementById('startGameBtn').addEventListener('click', () => this.startGame());
         document.getElementById('newGameBtn').addEventListener('click', () => this.startGame());
         document.getElementById('playAgainBtn').addEventListener('click', () => this.startGame());
-        document.getElementById('submitScoreBtn').addEventListener('click', () => this.submitScore());
         
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
@@ -271,6 +270,9 @@ class ConnectDotsGame {
         
         document.getElementById('gameOverScreen').classList.remove('hidden');
         this.stopTimer();
+        
+        // Automatically save the score
+        this.submitScore();
     }
 
     startTimer() {
@@ -296,23 +298,79 @@ class ConnectDotsGame {
     submitScore() {
         if (!this.gameComplete) return;
         
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = window.location.pathname;
-        
-        const scoreInput = document.createElement('input');
-        scoreInput.type = 'hidden';
-        scoreInput.name = 'score';
-        scoreInput.value = this.score;
-        
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-        form.appendChild(scoreInput);
-        if (csrfToken) {
-            form.appendChild(csrfToken.cloneNode());
+        // Get CSRF token from form or cookie
+        let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (!csrfToken) {
+            // Try to get from cookies
+            const name = 'csrftoken';
+            const value = '; ' + document.cookie;
+            const parts = value.split('; ' + name + '=');
+            if (parts.length === 2) {
+                csrfToken = { value: parts.pop().split(';').shift() };
+            }
         }
         
-        document.body.appendChild(form);
-        form.submit();
+        if (!csrfToken || !csrfToken.value) {
+            console.error('CSRF token not found');
+            alert('Xavfsizlik muammosi! Qayta yuklang.');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('score', this.score);
+        formData.append('csrfmiddlewaretoken', csrfToken.value);
+        
+        console.log('Submitting score:', this.score);
+        
+        fetch(window.location.pathname + 'save-score/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken.value
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else if (response.ok) {
+                return response.json();
+            } else {
+                return response.text().then(text => {
+                    throw new Error(`Server error: ${text}`);
+                });
+            }
+        })
+        .then(data => {
+            console.log('Score saved successfully:', data);
+            // Show success in game over screen
+            const gameOverMessage = document.querySelector('.completion-message');
+            if (gameOverMessage) {
+                gameOverMessage.innerHTML = '<i class="fas fa-check-circle text-success"></i> Natija avtomatik saqlandi!';
+            }
+            
+            // Add leaderboard button if not exists
+            const playAgainBtn = document.getElementById('playAgainBtn');
+            if (playAgainBtn && !document.getElementById('leaderboardBtn')) {
+                const leaderboardBtn = document.createElement('button');
+                leaderboardBtn.id = 'leaderboardBtn';
+                leaderboardBtn.className = 'btn btn-success btn-lg mt-3';
+                leaderboardBtn.innerHTML = '<i class="fas fa-trophy"></i> Reytingni Ko\'rish';
+                leaderboardBtn.onclick = () => {
+                    window.location.href = window.location.pathname.replace(/\/$/, '').replace(/\/games\/[^/]+\//, '/leaderboard/games/connect_dots/');
+                };
+                playAgainBtn.parentNode.appendChild(leaderboardBtn);
+            }
+        })
+        .catch(error => {
+            console.error('Error saving score:', error);
+            // Show error in game over screen
+            const gameOverMessage = document.querySelector('.completion-message');
+            if (gameOverMessage) {
+                gameOverMessage.innerHTML = '<i class="fas fa-exclamation-circle text-warning"></i> Ball saqlashda xatolik yuz berdi.';
+            }
+        });
     }
 }
 
