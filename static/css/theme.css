@@ -1,7 +1,8 @@
-/* Theme Switcher - Dark Mode and High Contrast Support */
+/* Theme Support - Simplified for Uzbek Platform */
+/* This file provides CSS variables and theme colors for the application */
 
 :root {
-    /* Light Mode (default) */
+    /* Primary colors - Purple and Blue gradient theme (maintained from original design) */
     --bg-primary: #ffffff;
     --bg-secondary: #f8f9fa;
     --bg-tertiary: #e9ecef;
@@ -19,60 +20,13 @@
     --warning-color: #ffc107;
 }
 
-/* Dark Mode */
-body.theme-dark {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #3a3a3a;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --border-color: #444444;
-    --card-bg: #252525;
-    --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
-    --accent-primary: #9966ff;
-    --accent-secondary: #4d2a99;
-    --link-color: #9966ff;
-    --link-hover: #b399ff;
-    --success-color: #51cf66;
-    --error-color: #ff6b6b;
-    --warning-color: #ffd93d;
-}
-
-/* High Contrast Mode */
-body.high-contrast {
-    --bg-primary: #000000;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #ffffff;
-    --text-primary: #ffffff;
-    --text-secondary: #000000;
-    --border-color: #000000;
-    --card-bg: #ffffff;
-    --card-shadow: 0 0 0 2px #000000;
-    --accent-primary: #ffff00;
-    --accent-secondary: #000000;
-    --link-color: #0000ff;
-    --link-hover: #ffff00;
-    --success-color: #008000;
-    --error-color: #ff0000;
-    --warning-color: #ff8800;
-}
-
-body.high-contrast.theme-dark {
-    --bg-primary: #000000;
-    --text-primary: #ffffff;
-    --border-color: #ffffff;
-    --card-bg: #1a1a1a;
-    --text-secondary: #cccccc;
-}
-
 /* Apply theme colors to body and main elements */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Global Element Styling */
+/* Links */
 a {
     color: var(--link-color);
 }
@@ -96,7 +50,7 @@ a:hover {
 .btn-primary {
     background-color: var(--accent-primary);
     border-color: var(--accent-primary);
-    color: var(--bg-primary);
+    color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -199,7 +153,7 @@ textarea:focus {
 /* Badges */
 .badge {
     background-color: var(--accent-primary);
-    color: var(--bg-primary);
+    color: #ffffff;
 }
 
 /* Dropdowns */
@@ -218,36 +172,6 @@ textarea:focus {
     color: var(--accent-primary);
 }
 
-/* High Contrast Specific Adjustments */
-body.high-contrast {
-    font-weight: 500;
-}
-
-body.high-contrast h1,
-body.high-contrast h2,
-body.high-contrast h3,
-body.high-contrast h4,
-body.high-contrast h5,
-body.high-contrast h6 {
-    font-weight: 700;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 0.5rem;
-}
-
-body.high-contrast .btn {
-    border-width: 2px;
-    font-weight: 600;
-}
-
-body.high-contrast .form-control,
-body.high-contrast .form-select {
-    border-width: 2px;
-}
-
-body.high-contrast .card {
-    border-width: 2px;
-}
-
 /* Focus indicators (important for accessibility) */
 *:focus {
     outline: 2px solid var(--accent-primary);
@@ -261,17 +185,6 @@ textarea:focus,
 a:focus {
     outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
-}
-
-/* High contrast focus */
-body.high-contrast *:focus {
-    outline: 3px solid var(--accent-primary);
-    outline-offset: 2px;
-}
-
-/* Smooth transitions for all theme changes */
-* {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Game cards styling */
@@ -289,7 +202,7 @@ body.high-contrast *:focus {
 /* Hero section */
 .hero-section {
     background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-    color: var(--bg-primary);
+    color: #ffffff;
 }
 
 /* Leaderboard styling */
