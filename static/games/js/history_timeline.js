@@ -309,12 +309,5 @@ class HistoryTimeline {
     }
 }
 
-// Initialize game
-let historyTimelineGame;
-document.addEventListener('DOMContentLoaded', () => {
-    const difficulty = document.getElementById('gameCanvas')?.dataset.difficulty || 'medium';
-    historyTimelineGame = new HistoryTimeline('gameCanvas', difficulty);
-});
-
 // Expose to window
 window.HistoryTimeline = HistoryTimeline;
