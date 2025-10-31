@@ -141,6 +141,8 @@ class WordBlast {
             }
         }
         this.newWord();
+        // Ensure score is displayed immediately after submission
+        this.draw();
     }
 
     draw() {
