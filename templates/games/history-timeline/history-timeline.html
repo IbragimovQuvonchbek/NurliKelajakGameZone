@@ -170,9 +170,39 @@
 
     function startGame() {
         if (gameInstance) {
+            // Show game controls, hide main controls
+            document.getElementById('gameButtonsContainer').style.display = 'flex';
+            document.getElementById('mainControls').style.display = 'none';
             gameInstance.startGame();
         }
     }
+
+    // Expose game functions globally for buttons
+    function submitOrder() {
+        if (gameInstance) {
+            gameInstance.submitOrder();
+        }
+    }
+
+    function undoSelection() {
+        if (gameInstance) {
+            gameInstance.undoSelection();
+        }
+    }
+
+    // Monitor game state to show/hide buttons
+    window.updateGameUI = function() {
+        const gameButtonsContainer = document.getElementById('gameButtonsContainer');
+        const mainControls = document.getElementById('mainControls');
+
+        if (gameInstance && gameInstance.gameState === 'playing') {
+            gameButtonsContainer.style.display = 'flex';
+            mainControls.style.display = 'none';
+        } else {
+            gameButtonsContainer.style.display = 'none';
+            mainControls.style.display = 'flex';
+        }
+    };
 
     // Initialize game on page load
     document.addEventListener('DOMContentLoaded', () => {
