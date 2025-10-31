@@ -253,6 +253,8 @@ class WordBlast {
         this.round = 0;
         this.timeLeft = this.totalTime;
         this.newWord();
+        // Draw immediately to show initial state
+        this.draw();
         this.gameTimer();
     }
 
