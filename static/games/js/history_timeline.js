@@ -149,8 +149,8 @@ class HistoryTimeline {
         this.ctx.fillStyle = '#212529';
         this.ctx.font = '24px Arial';
         this.ctx.textAlign = 'left';
-        this.ctx.fillText(`Score: ${this.score}`, 20, 40);
-        this.ctx.fillText(`Round: ${this.round}/${this.maxRounds}`, 20, 80);
+        this.ctx.fillText(`Ball: ${this.score}`, 20, 40);
+        this.ctx.fillText(`Raund: ${this.round}/${this.maxRounds}`, 20, 80);
 
         if (this.gameState === 'ready') {
             this.drawReady();
