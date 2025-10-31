@@ -97,10 +97,16 @@ class HistoryTimeline {
     }
 
     selectEvent(index) {
-        if (this.selectedOrder.includes(index)) return;
-        if (this.selectedOrder.length >= this.currentEvents.length) return;
-
-        this.selectedOrder.push(index);
+        // Toggle: if already selected, deselect it
+        const existingIndex = this.selectedOrder.indexOf(index);
+        if (existingIndex !== -1) {
+            this.selectedOrder.splice(existingIndex, 1);
+        } else {
+            // Only add if not at max capacity
+            if (this.selectedOrder.length < this.currentEvents.length) {
+                this.selectedOrder.push(index);
+            }
+        }
         this.draw();
     }
 
