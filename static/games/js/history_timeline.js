@@ -66,10 +66,25 @@ class HistoryTimeline {
             this.draw();
         });
 
-        document.addEventListener('click', (e) => {
-            if (this.gameState === 'playing' && e.target.dataset.eventIndex !== undefined) {
-                const index = parseInt(e.target.dataset.eventIndex);
-                this.selectEvent(index);
+        // Canvas click detection for event selection
+        this.canvas.addEventListener('click', (e) => {
+            if (this.gameState === 'playing') {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Check which event was clicked
+                const eventStartY = 160;
+                const eventHeight = 50;
+                const eventSpacing = 10;
+
+                for (let idx = 0; idx < this.currentEvents.length; idx++) {
+                    const eventY = eventStartY + idx * (eventHeight + eventSpacing);
+                    if (y >= eventY && y <= eventY + eventHeight && x >= 40 && x <= this.canvas.width - 40) {
+                        this.selectEvent(idx);
+                        break;
+                    }
+                }
             }
         });
 
