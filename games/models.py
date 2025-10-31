@@ -55,6 +55,21 @@ class Game(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def get_recommended_games(cls, user):
+        """Return games the user hasn't played yet"""
+        from django.db.models import Q
+        played_games = GameScore.objects.filter(user=user).values_list('game_id', flat=True)
+        return cls.objects.filter(is_active=True).exclude(id__in=played_games)
+
+    @classmethod
+    def get_game_by_slug(cls, slug):
+        """Get game by slug"""
+        try:
+            return cls.objects.get(slug=slug)
+        except cls.DoesNotExist:
+            return None
+
 
 class GameScore(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
