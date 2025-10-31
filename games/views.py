@@ -1,7 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Game, GameScore
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from .models import Game, GameScore, UserGameStatus, GameChallenge, ShareableScore
+from accounts.models import User
 import logging
+import uuid
+from datetime import datetime, timedelta
 
 # Set up logging
 logger = logging.getLogger(__name__)
