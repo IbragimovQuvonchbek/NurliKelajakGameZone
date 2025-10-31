@@ -21,88 +21,122 @@ class HistoryTimeline {
             'hard': { timeSpan: 10, eventCount: 6 }
         };
 
-        // Historical events (50+ events with variety for better gameplay)
+        // Historical events (110+ events with variety for better gameplay)
         this.events = [
-            // Ancient Times
-            { event: 'Roman Empire Falls', year: 476 },
+            // Ancient Times - Science & Mathematics
+            { event: 'Pythagorean Theorem Discovered', year: -500 },
+            { event: 'Archimedes Discovers Buoyancy', year: -250 },
             { event: 'Jesus Christ Born', year: 1 },
+            { event: 'Cleopatra Dies', year: 30 },
+            { event: 'Ptolemaic Egypt Ends', year: 30 },
             { event: 'Julius Caesar Assassinated', year: 44 },
-            { event: 'Colosseum Built in Rome', year: 80 },
             { event: 'Library of Alexandria Destroyed', year: 48 },
             { event: 'Vesuvius Erupts Pompeii', year: 79 },
-            { event: 'Cleopatra Dies', year: 30 },
-            { event: 'Great Wall of China Built', year: 1368 },
-            { event: 'Ptolemaic Egypt Ends', year: 30 },
+            { event: 'Colosseum Built in Rome', year: 80 },
+            { event: 'First Paper Made in China', year: 105 },
+            { event: 'Ptolemy\'s Almagest Published', year: 150 },
+            { event: 'Roman Empire Falls', year: 476 },
 
-            // Medieval Period
-            { event: 'Black Death Begins', year: 1347 },
-            { event: 'Magna Carta Signed', year: 1215 },
+            // Medieval Period - Innovations
+            { event: 'Gunpowder Invented in China', year: 850 },
             { event: 'Crusades Begin', year: 1096 },
+            { event: 'Compass Used for Navigation', year: 1190 },
+            { event: 'Magna Carta Signed', year: 1215 },
+            { event: 'Spectacles Invented', year: 1286 },
+            { event: 'Mechanical Clock Invented', year: 1335 },
+            { event: 'Black Death Begins', year: 1347 },
+            { event: 'Great Wall of China Built', year: 1368 },
             { event: 'Joan of Arc Born', year: 1412 },
             { event: 'Fall of Constantinople', year: 1453 },
             { event: 'Hundred Years War Ends', year: 1453 },
 
-            // Age of Exploration
-            { event: 'Columbus Reaches Americas', year: 1492 },
-            { event: 'Vasco da Gama Reaches India', year: 1498 },
-            { event: 'Ferdinand Magellan Circumnavigates World', year: 1522 },
-            { event: 'Portuguese Settle Brazil', year: 1500 },
-
             // Renaissance & Reformation
             { event: 'Leonardo da Vinci Born', year: 1452 },
             { event: 'Gutenberg Prints First Bible', year: 1455 },
-            { event: 'Martin Luther Posts 95 Theses', year: 1517 },
+            { event: 'Columbus Reaches Americas', year: 1492 },
+            { event: 'Vasco da Gama Reaches India', year: 1498 },
+            { event: 'Portuguese Settle Brazil', year: 1500 },
             { event: 'Michelangelo Paints Sistine Chapel', year: 1512 },
+            { event: 'Martin Luther Posts 95 Theses', year: 1517 },
+            { event: 'Ferdinand Magellan Circumnavigates World', year: 1522 },
+            { event: 'Copernicus Publishes Heliocentric Theory', year: 1543 },
+            { event: 'Galileo Invents Telescope', year: 1609 },
+            { event: 'Barometer Invented', year: 1643 },
+            { event: 'Isaac Newton Publishes Principia', year: 1687 },
 
-            // Early Modern Period
+            // Early Modern Period - Industrial Revolution
             { event: 'Industrial Revolution Begins', year: 1760 },
+            { event: 'Steam Engine Perfected', year: 1769 },
             { event: 'American Independence', year: 1776 },
             { event: 'French Revolution Begins', year: 1789 },
+            { event: 'Vaccination Discovered by Jenner', year: 1796 },
             { event: 'Napoleon Crowned Emperor', year: 1804 },
-            { event: 'Steam Engine Perfected', year: 1769 },
+            { event: 'Photography Invented', year: 1826 },
 
-            // 19th Century
-            { event: 'Titanic Sinks', year: 1912 },
-            { event: 'American Civil War Begins', year: 1861 },
-            { event: 'Darwin Publishes Evolution Theory', year: 1859 },
+            // 19th Century - Inventions & Science
             { event: 'First Telegraph Message', year: 1844 },
-            { event: 'Edison Invents Light Bulb', year: 1879 },
+            { event: 'Darwin Publishes Evolution Theory', year: 1859 },
+            { event: 'American Civil War Begins', year: 1861 },
+            { event: 'Dynamite Invented by Nobel', year: 1867 },
             { event: 'First Telephone Call', year: 1876 },
+            { event: 'Edison Invents Light Bulb', year: 1879 },
+            { event: 'X-ray Discovered', year: 1895 },
+            { event: 'First Airplane Flight', year: 1903 },
+            { event: 'Theory of Relativity Published', year: 1905 },
+            { event: 'Titanic Sinks', year: 1912 },
 
             // 20th Century - Wars
             { event: 'World War 1 Starts', year: 1914 },
             { event: 'World War 1 Ends', year: 1918 },
+            { event: 'First Television Broadcast', year: 1927 },
+            { event: 'Penicillin Discovered', year: 1928 },
+            { event: 'Nuclear Fission Discovered', year: 1938 },
             { event: 'World War 2 Starts', year: 1939 },
             { event: 'Atomic Bomb on Hiroshima', year: 1945 },
             { event: 'World War 2 Ends', year: 1945 },
 
-            // 20th Century - Technology & Space
+            // 20th Century - Technology & Space Age
             { event: 'Computer Invented', year: 1946 },
-            { event: 'First Television Broadcast', year: 1927 },
+            { event: 'Transistor Invented', year: 1947 },
+            { event: 'DNA Structure Discovered', year: 1953 },
+            { event: 'Polio Vaccine Developed', year: 1955 },
+            { event: 'Sputnik First Satellite', year: 1957 },
+            { event: 'Laser Invented', year: 1960 },
+            { event: 'Yuri Gagarin First Human in Space', year: 1961 },
+            { event: 'First Heart Transplant', year: 1967 },
             { event: 'Moon Landing', year: 1969 },
             { event: 'Internet Invented', year: 1969 },
-            { event: 'First Mobile Phone', year: 1973 },
-            { event: 'Personal Computer Released', year: 1981 },
-            { event: 'World Wide Web Created', year: 1989 },
-
-            // Late 20th Century
-            { event: 'Fall of Berlin Wall', year: 1989 },
-            { event: 'Soviet Union Collapses', year: 1991 },
-            { event: 'First Email Sent', year: 1971 },
-            { event: 'DNA Structure Discovered', year: 1953 },
             { event: 'Man Walks on Moon', year: 1969 },
-            { event: 'Apple Computer Founded', year: 1976 },
+            { event: 'First Email Sent', year: 1971 },
+            { event: 'Microprocessor Invented', year: 1971 },
+            { event: 'First Mobile Phone', year: 1973 },
             { event: 'Microsoft Founded', year: 1975 },
+            { event: 'Apple Computer Founded', year: 1976 },
+            { event: 'First Test Tube Baby', year: 1978 },
+            { event: 'Personal Computer Released', year: 1981 },
+            { event: 'Space Shuttle First Flight', year: 1981 },
             { event: 'Chernobyl Disaster', year: 1986 },
             { event: 'Challenger Space Shuttle Disaster', year: 1986 },
+            { event: 'Fall of Berlin Wall', year: 1989 },
+            { event: 'World Wide Web Created', year: 1989 },
+            { event: 'Hubble Space Telescope Launched', year: 1990 },
+            { event: 'Soviet Union Collapses', year: 1991 },
 
-            // 21st Century
+            // 21st Century - Modern Technology & Science
             { event: 'World Trade Center Attack', year: 2001 },
+            { event: 'Human Genome Project Completed', year: 2003 },
             { event: 'Facebook Founded', year: 2004 },
+            { event: 'YouTube Founded', year: 2005 },
             { event: 'iPhone Released', year: 2007 },
             { event: 'First Android Phone', year: 2008 },
+            { event: 'Tesla Roadster Released', year: 2008 },
+            { event: 'Higgs Boson Discovered', year: 2012 },
             { event: 'Curiosity Rover on Mars', year: 2012 },
-            { event: 'Artificial Intelligence AlphaGo', year: 2016 }
+            { event: 'CRISPR Gene Editing Breakthrough', year: 2013 },
+            { event: 'Artificial Intelligence AlphaGo', year: 2016 },
+            { event: 'First Image of Black Hole', year: 2019 },
+            { event: 'COVID-19 Vaccines Developed', year: 2020 },
+            { event: 'James Webb Space Telescope Launched', year: 2021 }
         ];
 
         this.init();
