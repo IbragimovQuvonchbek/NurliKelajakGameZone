@@ -55,10 +55,47 @@ class UserAchievement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_achievements')
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     unlocked_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         unique_together = ['user', 'achievement']
         ordering = ['-unlocked_at']
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.achievement.title}"
+
+
+class UserSettings(models.Model):
+    THEME_CHOICES = [
+        ('auto', 'Auto (System preference)'),
+        ('light', 'Light Mode'),
+        ('dark', 'Dark Mode'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
+    theme_mode = models.CharField(max_length=10, choices=THEME_CHOICES, default='auto')
+    high_contrast_enabled = models.BooleanField(default=False)
+    keyboard_navigation_hints = models.BooleanField(default=True)
+    screen_reader_mode = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'User Settings'
+        verbose_name_plural = 'User Settings'
+
+    def __str__(self):
+        return f"Settings for {self.user.username}"
+
+
+class UserFollowing(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['follower', 'following']
+        verbose_name = 'User Following'
+        verbose_name_plural = 'User Followings'
+
+    def __str__(self):
+        return f"{self.follower.username} follows {self.following.username}"

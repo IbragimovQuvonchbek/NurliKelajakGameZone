@@ -1,0 +1,389 @@
+/* Animations and Visual Feedback for Games */
+
+/* Keyframe Animations */
+
+/* Confetti Animation */
+@keyframes confetti-burst {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Particle Effects */
+@keyframes particle-fall {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), 100px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Shake Animation for Wrong Answer */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Bounce Animation for Correct Answer */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Pop-up Floating Text */
+@keyframes float-up {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Scale Pop Animation */
+@keyframes scale-pop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Slide In Animation */
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Spin Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Celebration/Confetti Burst */
+@keyframes celebrate {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--spread-x), var(--spread-y)) scale(0) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Utility Classes for Animations */
+
+/* Confetti Element */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    animation: confetti-burst 1.5s ease-out forwards;
+}
+
+/* Particle Element */
+.particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: particle-fall 1s ease-out forwards;
+}
+
+/* Shake Class */
+.shake {
+    animation: shake 0.5s;
+}
+
+/* Bounce Class */
+.bounce {
+    animation: bounce 0.6s;
+}
+
+/* Float Up Class */
+.float-up {
+    animation: float-up 1s ease-out forwards;
+}
+
+/* Pulse Class */
+.pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Scale Pop Class */
+.scale-pop {
+    animation: scale-pop 0.5s ease-out;
+}
+
+/* Slide In Class */
+.slide-in {
+    animation: slide-in 0.5s ease-out;
+}
+
+/* Fade In Class */
+.fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+
+/* Spin Class */
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Score Popup Styling */
+.score-popup {
+    position: fixed;
+    font-weight: bold;
+    font-size: 24px;
+    color: #28a745;
+    pointer-events: none;
+    animation: float-up 1s ease-out forwards;
+    z-index: 1000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.score-popup.negative {
+    color: #dc3545;
+}
+
+/* Achievement Unlock Animation */
+.achievement-unlock {
+    animation: scale-pop 0.6s ease-out, pulse 0.6s ease-out 0.6s;
+}
+
+/* Game Board Shake */
+.game-board.wrong-answer {
+    animation: shake 0.4s;
+}
+
+.game-board.correct-answer {
+    animation: bounce 0.4s;
+}
+
+/* Button Hover Effects */
+.btn:active {
+    animation: scale-pop 0.2s ease-out;
+}
+
+/* Loading Spinner */
+.spinner-border {
+    animation: spin 1s linear infinite;
+    border: 4px solid rgba(111, 66, 193, 0.2);
+    border-top-color: #6f42c1;
+}
+
+/* Toast Notification Animation */
+.toast {
+    animation: slide-in 0.3s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast.success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.toast.error {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.toast.warning {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+}
+
+.toast.info {
+    background-color: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+}
+
+/* Card Hover Effects */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Button Hover Effects */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Game Card Animations */
+.game-card {
+    transition: all 0.3s ease;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+.game-card:active {
+    transform: scale(0.95);
+}
+
+/* Leaderboard Row Animations */
+.leaderboard-row {
+    transition: background-color 0.3s ease;
+}
+
+.leaderboard-row:hover {
+    background-color: rgba(111, 66, 193, 0.1);
+}
+
+/* Achievement Badge Animation */
+.achievement-badge {
+    transition: all 0.3s ease;
+}
+
+.achievement-badge:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+    transition: width 0.6s ease;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Overlay Animation */
+.overlay {
+    animation: fade-in 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal Animation */
+.modal.show .modal-dialog {
+    animation: scale-pop 0.3s ease-out;
+}
+
+/* Alert Animation */
+.alert {
+    animation: slide-in 0.3s ease-out;
+}
+
+/* Celebration Confetti Burst */
+.celebrate {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.celebrate::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #6f42c1;
+    border-radius: 50%;
+    animation: celebrate 1.5s ease-out forwards;
+}
+
+/* High Performance Animations (GPU Accelerated) */
+.animate-gpu {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Smooth Transitions for Interactive Elements */
+button,
+a,
+input,
+select,
+textarea {
+    transition: all 0.2s ease;
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

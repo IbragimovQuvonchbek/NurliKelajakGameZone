@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Лента активности - Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">
+                <i class="fas fa-stream me-2"></i>Лента активности
+            </h1>
+
+            <div id="activity-feed" class="list-group">
+                <div class="alert alert-info">
+                    <i class="fas fa-spinner fa-spin me-2"></i>Загрузка активности...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .activity-item {
+        border-left: 4px solid #6f42c1;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: var(--card-bg);
+        border-radius: 0.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .activity-item:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transform: translateX(5px);
+    }
+
+    .activity-item.score {
+        border-left-color: #28a745;
+    }
+
+    .activity-item.achievement {
+        border-left-color: #ffc107;
+    }
+
+    .activity-timestamp {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .activity-user {
+        font-weight: 600;
+        color: #6f42c1;
+    }
+
+    .score-value {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    .achievement-badge {
+        display: inline-block;
+        background-color: #ffc107;
+        color: #000;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    async function loadActivityFeed() {
+        try {
+            const response = await fetch('/accounts/api/activity-feed/');
+            const data = await response.json();
+
+            if (!data.success || !data.activity || data.activity.length === 0) {
+                document.getElementById('activity-feed').innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Нет активности. Начните следить за игроками!
+                    </div>
+                `;
+                return;
+            }
+
+            const activityHtml = data.activity.map(activity => {
+                const date = new Date(activity.timestamp);
+                const timeAgo = getTimeAgo(date);
+
+                if (activity.type === 'score') {
+                    return `
+                        <div class="activity-item score">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="activity-user">${activity.user}</span>
+                                    набрал
+                                    <span class="score-value">${activity.score}</span>
+                                    очков в игре
+                                    <strong>${activity.game}</strong>
+                                </div>
+                                <span class="activity-timestamp">${timeAgo}</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (activity.type === 'achievement') {
+                    return `
+                        <div class="activity-item achievement">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="activity-user">${activity.user}</span>
+                                    получил достижение
+                                    <span class="achievement-badge">
+                                        <i class="fas fa-trophy me-1"></i>${activity.achievement}
+                                    </span>
+                                </div>
+                                <span class="activity-timestamp">${timeAgo}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                return '';
+            }).join('');
+
+            document.getElementById('activity-feed').innerHTML = activityHtml || `
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Нет активности для отображения.
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error loading activity feed:', error);
+            document.getElementById('activity-feed').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Ошибка при загрузке активности.
+                </div>
+            `;
+        }
+    }
+
+    function getTimeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) return `${days}д назад`;
+        if (hours > 0) return `${hours}ч назад`;
+        if (minutes > 0) return `${minutes}м назад`;
+        return 'только что';
+    }
+
+    // Load feed on page load
+    document.addEventListener('DOMContentLoaded', loadActivityFeed);
+
+    // Refresh feed every 30 seconds
+    setInterval(loadActivityFeed, 30000);
+</script>
+{% endblock %}
