@@ -12,6 +12,7 @@ class HistoryTimeline {
         this.currentEvents = [];
         this.selectedOrder = [];
         this.eventPool = [];
+        this.usedEvents = [];
 
         // Difficulty settings
         this.difficultySettings = {
