@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Параметры - Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">
+                <i class="fas fa-cog me-2"></i>Параметры
+            </h1>
+
+            <!-- Theme Settings -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-palette me-2"></i>Темы оформления
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="theme-settings-form">
+                        <div class="mb-3">
+                            <label class="form-label">Режим темы:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme_mode" id="theme-auto" value="auto" checked>
+                                <label class="form-check-label" for="theme-auto">
+                                    Автоматический (по умолчанию)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme_mode" id="theme-light" value="light">
+                                <label class="form-check-label" for="theme-light">
+                                    Светлый режим
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme_mode" id="theme-dark" value="dark">
+                                <label class="form-check-label" for="theme-dark">
+                                    Темный режим
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Accessibility Settings -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-universal-access me-2"></i>Специальные возможности
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="accessibility-settings-form">
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="high_contrast_checkbox" name="high_contrast_enabled">
+                                <label class="form-check-label" for="high_contrast_checkbox">
+                                    Высокий контраст
+                                </label>
+                                <small class="d-block text-muted">Увеличивает контрастность текста и элементов интерфейса</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="keyboard_navigation_checkbox" name="keyboard_navigation_hints" checked>
+                                <label class="form-check-label" for="keyboard_navigation_checkbox">
+                                    Подсказки навигации с клавиатуры
+                                </label>
+                                <small class="d-block text-muted">Показывает подсказки для навигации с клавиатуры</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="screen_reader_checkbox" name="screen_reader_mode">
+                                <label class="form-check-label" for="screen_reader_checkbox">
+                                    Режим экранного диктора
+                                </label>
+                                <small class="d-block text-muted">Оптимизирует интерфейс для экранного диктора</small>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Сохранить параметры
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-question-circle me-2"></i>Справка
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6>Горячие клавиши:</h6>
+                    <ul class="list-unstyled">
+                        <li><kbd>Tab</kbd> - Переход к следующему элементу</li>
+                        <li><kbd>Shift+Tab</kbd> - Переход к предыдущему элементу</li>
+                        <li><kbd>Enter</kbd> - Активация кнопки или ссылки</li>
+                        <li><kbd>Space</kbd> - Активация переключателя</li>
+                        <li><kbd>Esc</kbd> - Закрытие модального окна</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load and apply saved settings
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/accounts/api/users/settings-get/');
+        const data = await response.json();
+        if (data.success) {
+            const settings = data.settings;
+            document.querySelector(`input[name="theme_mode"][value="${settings.theme_mode}"]`).checked = true;
+            document.getElementById('high_contrast_checkbox').checked = settings.high_contrast_enabled;
+            document.getElementById('keyboard_navigation_checkbox').checked = settings.keyboard_navigation_hints;
+            document.getElementById('screen_reader_checkbox').checked = settings.screen_reader_mode;
+        }
+    } catch (error) {
+        console.error('Error loading settings:', error);
+    }
+});
+
+// Save settings on form change
+document.getElementById('theme-settings-form').addEventListener('change', async (e) => {
+    const formData = new FormData();
+    formData.append('theme_mode', document.querySelector('input[name="theme_mode"]:checked').value);
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+    try {
+        const response = await fetch('/accounts/api/users/settings/', {
+            method: 'POST',
+            body: formData
+        });
+        if (response.ok && window.GameAnimations) {
+            GameAnimations.toast('Параметры сохранены', 'success');
+        }
+    } catch (error) {
+        console.error('Error saving settings:', error);
+    }
+});
+
+document.getElementById('accessibility-settings-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+    try {
+        const response = await fetch('/accounts/api/users/settings/', {
+            method: 'POST',
+            body: formData
+        });
+        if (response.ok && window.GameAnimations) {
+            GameAnimations.toast('Параметры сохранены успешно', 'success');
+        }
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        if (window.GameAnimations) {
+            GameAnimations.toast('Ошибка при сохранении параметров', 'error');
+        }
+    }
+});
+</script>
+{% endblock %}
