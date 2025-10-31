@@ -286,7 +286,7 @@ class WordBlast {
         }).then(response => {
             if (response.ok) {
                 setTimeout(() => {
-                    window.location.href = `/leaderboard/${gameSlug}/`;
+                    window.location.href = `/leaderboard/games/${gameSlug}/`;
                 }, 2000);
             }
         });
