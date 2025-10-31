@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
@@ -10,10 +10,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from .services import get_user_stats
 from datetime import datetime, timedelta
-from games.models import GameScore
+from games.models import GameScore, GameChallenge, UserGameStatus
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
+from .models import UserFollowing, UserSettings
 
 
 def signup(request):
