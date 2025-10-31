@@ -75,11 +75,17 @@ class HistoryTimeline {
 
             // 19th Century - Inventions & Science
             { event: 'First Telegraph Message', year: 1844 },
+            { event: 'Anesthesia First Used in Surgery', year: 1846 },
+            { event: 'Communist Manifesto Published', year: 1848 },
             { event: 'Darwin Publishes Evolution Theory', year: 1859 },
             { event: 'American Civil War Begins', year: 1861 },
+            { event: 'Periodic Table Created', year: 1869 },
             { event: 'Dynamite Invented by Nobel', year: 1867 },
             { event: 'First Telephone Call', year: 1876 },
             { event: 'Edison Invents Light Bulb', year: 1879 },
+            { event: 'First Automobile Created', year: 1885 },
+            { event: 'Eiffel Tower Completed', year: 1889 },
+            { event: 'Radio Invented', year: 1895 },
             { event: 'X-ray Discovered', year: 1895 },
             { event: 'First Airplane Flight', year: 1903 },
             { event: 'Theory of Relativity Published', year: 1905 },
