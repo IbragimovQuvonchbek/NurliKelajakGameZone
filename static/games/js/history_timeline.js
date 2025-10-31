@@ -209,8 +209,19 @@ class HistoryTimeline {
 
     getRandomEvents() {
         const count = this.difficultySettings[this.difficulty].eventCount;
-        const randomized = [...this.events].sort(() => Math.random() - 0.5).slice(0, count);
-        return randomized.sort(() => Math.random() - 0.5);
+
+        // Fisher-Yates shuffle to get unique random events
+        const shuffled = [...this.events];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        // Get unique events for this round
+        const selectedEvents = shuffled.slice(0, count);
+
+        // Shuffle them again for display order (different from chronological)
+        return selectedEvents.sort(() => Math.random() - 0.5);
     }
 
     newRound() {
