@@ -168,6 +168,8 @@
     // Initialize game on page load
     document.addEventListener('DOMContentLoaded', () => {
         window.gameSlug = 'word-blast';
+        // Initialize game with default difficulty
+        gameInstance = new WordBlast('gameCanvas', 'easy');
     });
 </script>
 {% endblock %}
