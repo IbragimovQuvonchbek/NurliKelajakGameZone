@@ -244,14 +244,14 @@ class HistoryTimeline {
         this.ctx.fillStyle = '#6f42c1';
         this.ctx.font = 'bold 48px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('Game Over!', width / 2, height / 2 - 100);
+        this.ctx.fillText('O\'yin tugadi!', width / 2, height / 2 - 100);
 
         this.ctx.font = '36px Arial';
-        this.ctx.fillText(`Final Score: ${this.score}`, width / 2, height / 2 - 20);
+        this.ctx.fillText(`Yakuniy ball: ${this.score}`, width / 2, height / 2 - 20);
 
         this.ctx.font = '18px Arial';
         this.ctx.fillStyle = '#666';
-        this.ctx.fillText('Press Start Game to play again', width / 2, height / 2 + 70);
+        this.ctx.fillText('Yana o\'ynash uchun Start Game ni bosing', width / 2, height / 2 + 70);
     }
 
     startGame() {
