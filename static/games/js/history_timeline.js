@@ -186,7 +186,7 @@ class HistoryTimeline {
         this.ctx.fillStyle = '#6f42c1';
         this.ctx.font = 'bold 20px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('Click events in chronological order (oldest to newest)', width / 2, 120);
+        this.ctx.fillText('Hodisalarni xronologik tartibda bosing (eng eski dan eng yangi gacha)', width / 2, 120);
 
         // Draw events
         const eventStartY = 160;
@@ -233,8 +233,8 @@ class HistoryTimeline {
         this.ctx.font = '14px Arial';
         this.ctx.textAlign = 'center';
         const instructionY = eventStartY + (this.currentEvents.length * (eventHeight + eventSpacing)) + 30;
-        this.ctx.fillText(`Selected: ${this.selectedOrder.length}/${this.currentEvents.length}`, width / 2, instructionY);
-        this.ctx.fillText('Press Enter to submit or Backspace to undo', width / 2, instructionY + 25);
+        this.ctx.fillText(`Tanlangan: ${this.selectedOrder.length}/${this.currentEvents.length}`, width / 2, instructionY);
+        this.ctx.fillText('Yuborish uchun Enter yoki ortga qaytish uchun Backspace bosing', width / 2, instructionY + 25);
     }
 
     drawGameOver() {
