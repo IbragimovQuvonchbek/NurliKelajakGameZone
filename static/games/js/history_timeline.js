@@ -94,8 +94,10 @@ class HistoryTimeline {
             // 20th Century - Wars
             { event: 'World War 1 Starts', year: 1914 },
             { event: 'World War 1 Ends', year: 1918 },
+            { event: 'Insulin Discovered', year: 1922 },
             { event: 'First Television Broadcast', year: 1927 },
             { event: 'Penicillin Discovered', year: 1928 },
+            { event: 'Empire State Building Completed', year: 1931 },
             { event: 'Nuclear Fission Discovered', year: 1938 },
             { event: 'World War 2 Starts', year: 1939 },
             { event: 'Atomic Bomb on Hiroshima', year: 1945 },
