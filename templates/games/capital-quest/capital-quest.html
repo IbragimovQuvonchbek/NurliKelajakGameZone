@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Capital Quest - Nurli Kelajak Oʻyinlar Zonasi{% endblock %}
+
+{% block extra_css %}
+<style>
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .game-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .game-header h1 {
+        color: #6f42c1;
+        margin-bottom: 10px;
+    }
+
+    .difficulty-selector {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .difficulty-btn {
+        padding: 8px 16px;
+        border: 2px solid #6f42c1;
+        background: white;
+        color: #6f42c1;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .difficulty-btn:hover {
+        background: #f0f0f0;
+    }
+
+    .difficulty-btn.active {
+        background: #6f42c1;
+        color: white;
+    }
+
+    canvas {
+        border: 3px solid #6f42c1;
+        border-radius: 8px;
+        background: white;
+        max-width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .game-controls {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .game-btn {
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-start {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-start:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-home {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-home:hover {
+        background: #5a6268;
+    }
+
+    .game-info {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <div class="game-header">
+        <h1><i class="fas fa-globe me-2"></i>Capital Quest</h1>
+        <p class="text-muted">Match world capitals to their countries!</p>
+    </div>
+
+    <div class="difficulty-selector">
+        <button class="difficulty-btn active" onclick="setDifficulty('easy')">
+            <i class="fas fa-leaf me-2"></i>Easy
+        </button>
+        <button class="difficulty-btn" onclick="setDifficulty('hard')">
+            <i class="fas fa-fire me-2"></i>Hard
+        </button>
+    </div>
+
+    <div style="width: 100%; max-width: 800px;">
+        <canvas id="gameCanvas" width="800" height="600" data-difficulty="easy"></canvas>
+    </div>
+
+    <div class="game-controls">
+        <button class="game-btn btn-start" onclick="startGame()">
+            <i class="fas fa-play me-2"></i>Start Game
+        </button>
+        <button class="game-btn btn-home" onclick="window.location.href='{% url 'games:home' %}'">
+            <i class="fas fa-home me-2"></i>Return Home
+        </button>
+    </div>
+
+    <div class="game-info">
+        <p><strong>Instructions:</strong></p>
+        <p>Click on the capital city that matches the country shown.</p>
+        <p>You have limited time for each round!</p>
+    </div>
+</div>
+
+<script src="{% static 'js/animations.js' %}"></script>
+<script src="{% static 'games/js/capital_quest.js' %}"></script>
+<script>
+    let currentDifficulty = 'easy';
+    let gameInstance = null;
+
+    function setDifficulty(difficulty) {
+        currentDifficulty = difficulty;
+        document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Reinitialize game with new difficulty
+        const canvas = document.getElementById('gameCanvas');
+        canvas.dataset.difficulty = difficulty;
+        gameInstance = new CapitalQuest('gameCanvas', difficulty);
+    }
+
+    function startGame() {
+        if (gameInstance) {
+            gameInstance.startGame();
+        }
+    }
+
+    // Initialize game on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        window.gameSlug = 'capital-quest';
+    });
+</script>
+{% endblock %}
