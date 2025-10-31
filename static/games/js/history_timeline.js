@@ -301,6 +301,10 @@ class HistoryTimeline {
     endGame() {
         this.gameState = 'gameOver';
         this.draw();
+        // Update UI to hide game buttons
+        if (window.updateGameUI) {
+            window.updateGameUI();
+        }
         this.saveScore();
     }
 
