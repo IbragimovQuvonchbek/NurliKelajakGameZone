@@ -176,9 +176,10 @@ class WordBlast {
 
         this.ctx.font = '18px Arial';
         this.ctx.fillStyle = '#666';
-        this.ctx.fillText('Unscramble the letters to form words!', width / 2, height / 2 - 20);
-        this.ctx.fillText(`Difficulty: ${this.difficulty.toUpperCase()}`, width / 2, height / 2 + 20);
-        this.ctx.fillText('Press Start Game to begin', width / 2, height / 2 + 70);
+        this.ctx.fillText('Harflarni shakllantirish uchun so\'zlarni tartiblashtiringiz!', width / 2, height / 2 - 20);
+        const diffLabel = this.difficulty === 'easy' ? 'OSON' : this.difficulty === 'medium' ? 'O\'RTA' : 'QIYIN';
+        this.ctx.fillText(`Qiyinlik: ${diffLabel}`, width / 2, height / 2 + 20);
+        this.ctx.fillText('O\'yinni boshlash uchun Start Game ni bosing', width / 2, height / 2 + 70);
     }
 
     drawGame() {
