@@ -395,6 +395,7 @@ class HistoryTimeline {
         this.gameState = 'playing';
         this.score = 0;
         this.round = 0;
+        this.usedEvents = [];
         this.newRound();
         this.gameRenderLoop();
     }
