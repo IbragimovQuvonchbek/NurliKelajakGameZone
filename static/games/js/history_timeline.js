@@ -278,6 +278,18 @@ class HistoryTimeline {
         this.score = 0;
         this.round = 0;
         this.newRound();
+        this.gameRenderLoop();
+    }
+
+    gameRenderLoop() {
+        const renderTimer = setInterval(() => {
+            if (this.gameState !== 'playing') {
+                clearInterval(renderTimer);
+                return;
+            }
+            // Continuously redraw to show updates
+            this.draw();
+        }, 100);
     }
 
     endGame() {
