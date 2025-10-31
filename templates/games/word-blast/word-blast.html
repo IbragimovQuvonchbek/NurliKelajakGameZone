@@ -106,19 +106,19 @@
 {% block content %}
 <div class="game-container">
     <div class="game-header">
-        <h1><i class="fas fa-spell-check me-2"></i>Word Blast</h1>
-        <p class="text-muted">Unscramble the letters to form words within the time limit!</p>
+        <h1><i class="fas fa-spell-check me-2"></i>So'z Portlashi</h1>
+        <p class="text-muted">Vaqt chеgarasi ichida harflarni shakllantirish uchun so'zlarni tartiblashtiringiz!</p>
     </div>
 
     <div class="difficulty-selector">
         <button class="difficulty-btn active" onclick="setDifficulty('easy')">
-            <i class="fas fa-leaf me-2"></i>Easy
+            <i class="fas fa-leaf me-2"></i>Oson
         </button>
         <button class="difficulty-btn" onclick="setDifficulty('medium')">
-            <i class="fas fa-star me-2"></i>Medium
+            <i class="fas fa-star me-2"></i>O'rta
         </button>
         <button class="difficulty-btn" onclick="setDifficulty('hard')">
-            <i class="fas fa-fire me-2"></i>Hard
+            <i class="fas fa-fire me-2"></i>Qiyin
         </button>
     </div>
 
@@ -128,17 +128,17 @@
 
     <div class="game-controls">
         <button class="game-btn btn-start" onclick="startGame()">
-            <i class="fas fa-play me-2"></i>Start Game
+            <i class="fas fa-play me-2"></i>O'yinni Boshlash
         </button>
         <button class="game-btn btn-home" onclick="window.location.href='{% url 'games:home' %}'">
-            <i class="fas fa-home me-2"></i>Return Home
+            <i class="fas fa-home me-2"></i>Bosh Sahifaga
         </button>
     </div>
 
     <div class="game-info">
-        <p><strong>Instructions:</strong></p>
-        <p>Type the letters using your keyboard to unscramble each word.</p>
-        <p>Press Enter to submit or Backspace to undo.</p>
+        <p><strong>Ko'rsatmalar:</strong></p>
+        <p>Har bir so'zni tartiblashtirishuchun klaviaturadan harflarni yozing.</p>
+        <p>Yuborish uchun Enter ni bosing yoki ortga qaytish uchun Backspace ni bosing.</p>
     </div>
 </div>
 
