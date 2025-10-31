@@ -133,9 +133,9 @@ class HistoryTimeline {
                 GameAnimations.showScore(30, this.canvas.width / 2, this.canvas.height / 2, false);
             }
         } else {
-            this.score = Math.max(0, this.score - 10);
+            // No penalty for mistakes, just +0
             if (window.GameAnimations) {
-                GameAnimations.showScore(-10, this.canvas.width / 2, this.canvas.height / 2, true);
+                GameAnimations.showScore(0, this.canvas.width / 2, this.canvas.height / 2, true);
             }
         }
 
