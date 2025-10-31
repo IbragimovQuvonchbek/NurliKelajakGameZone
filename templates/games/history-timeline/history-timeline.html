@@ -126,7 +126,16 @@
         <canvas id="gameCanvas" width="800" height="600" data-difficulty="easy"></canvas>
     </div>
 
-    <div class="game-controls">
+    <div id="gameButtonsContainer" class="game-controls" style="display: none; gap: 10px;">
+        <button class="game-btn btn-start" onclick="submitOrder()" id="submitBtn">
+            <i class="fas fa-check me-2"></i>Yuborish (Enter)
+        </button>
+        <button class="game-btn" style="background: #dc3545; color: white;" onclick="undoSelection()" id="undoBtn">
+            <i class="fas fa-undo me-2"></i>Ortga Qaytarish (Backspace)
+        </button>
+    </div>
+
+    <div class="game-controls" id="mainControls">
         <button class="game-btn btn-start" onclick="startGame()">
             <i class="fas fa-play me-2"></i>O'yinni Boshlash
         </button>
