@@ -136,13 +136,16 @@ class HistoryTimeline {
             { event: 'iPhone Released', year: 2007 },
             { event: 'First Android Phone', year: 2008 },
             { event: 'Tesla Roadster Released', year: 2008 },
+            { event: 'Bitcoin Created', year: 2009 },
+            { event: 'Instagram Launched', year: 2010 },
             { event: 'Higgs Boson Discovered', year: 2012 },
             { event: 'Curiosity Rover on Mars', year: 2012 },
             { event: 'CRISPR Gene Editing Breakthrough', year: 2013 },
             { event: 'Artificial Intelligence AlphaGo', year: 2016 },
             { event: 'First Image of Black Hole', year: 2019 },
             { event: 'COVID-19 Vaccines Developed', year: 2020 },
-            { event: 'James Webb Space Telescope Launched', year: 2021 }
+            { event: 'James Webb Space Telescope Launched', year: 2021 },
+            { event: 'ChatGPT Released', year: 2022 }
         ];
 
         this.init();
