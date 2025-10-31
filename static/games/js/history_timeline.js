@@ -245,17 +245,30 @@ class HistoryTimeline {
     getRandomEvents() {
         const count = this.difficultySettings[this.difficulty].eventCount;
 
-        // Fisher-Yates shuffle to get unique random events
-        const shuffled = [...this.events];
+        // Filter out events that have already been used in this game
+        const unusedEvents = this.events.filter(event =>
+            !this.usedEvents.some(used => used.event === event.event && used.year === event.year)
+        );
+
+        // Check if we have enough unused events
+        if (unusedEvents.length < count) {
+            console.warn('Not enough unused events remaining');
+        }
+
+        // Fisher-Yates shuffle on unused events
+        const shuffled = [...unusedEvents];
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
 
-        // Get unique events for this round
-        const selectedEvents = shuffled.slice(0, count);
+        // Select required count of events
+        const selectedEvents = shuffled.slice(0, Math.min(count, unusedEvents.length));
 
-        // Shuffle them again for display order (different from chronological)
+        // Track these events as used
+        selectedEvents.forEach(event => this.usedEvents.push(event));
+
+        // Shuffle them again for random display order
         return selectedEvents.sort(() => Math.random() - 0.5);
     }
 
