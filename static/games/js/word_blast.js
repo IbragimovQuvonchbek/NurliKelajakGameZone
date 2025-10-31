@@ -190,7 +190,7 @@ class WordBlast {
         this.ctx.fillStyle = '#6f42c1';
         this.ctx.font = 'bold 32px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('Unscramble:', width / 2, height / 2 - 50);
+        this.ctx.fillText('Tartiblashtiringiz:', width / 2, height / 2 - 50);
 
         const letterSpacing = 45;
         const startX = width / 2 - (this.scrambledLetters.length * letterSpacing) / 2;
@@ -217,12 +217,12 @@ class WordBlast {
         this.ctx.font = '18px Arial';
         this.ctx.textAlign = 'center';
         const selectedWord = this.selectedLetters.map(s => s.letter).join('');
-        this.ctx.fillText(`Your word: ${selectedWord}`, width / 2, height / 2 + 120);
+        this.ctx.fillText(`Sizning so'zingiz: ${selectedWord}`, width / 2, height / 2 + 120);
 
         // Draw hint
         this.ctx.font = '14px Arial';
         this.ctx.fillStyle = '#666';
-        this.ctx.fillText('Type letters, Backspace to remove, Enter to submit', width / 2, height / 2 + 160);
+        this.ctx.fillText('Harflarni kiriting, olib tashlash uchun Backspace, yuborish uchun Enter', width / 2, height / 2 + 160);
     }
 
     drawGameOver() {
