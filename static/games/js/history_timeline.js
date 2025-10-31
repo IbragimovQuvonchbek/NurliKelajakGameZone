@@ -168,13 +168,14 @@ class HistoryTimeline {
         this.ctx.fillStyle = '#6f42c1';
         this.ctx.font = 'bold 48px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('History Timeline', width / 2, height / 2 - 100);
+        this.ctx.fillText('Tarix Xronologiyasi', width / 2, height / 2 - 100);
 
         this.ctx.font = '18px Arial';
         this.ctx.fillStyle = '#666';
-        this.ctx.fillText('Order the historical events chronologically!', width / 2, height / 2 - 20);
-        this.ctx.fillText(`Difficulty: ${this.difficulty.toUpperCase()}`, width / 2, height / 2 + 20);
-        this.ctx.fillText('Press Start Game to begin', width / 2, height / 2 + 70);
+        this.ctx.fillText('Tarixiy hodisalarni xronologik tartibda aniqlashtiringiz!', width / 2, height / 2 - 20);
+        const diffLabel = this.difficulty === 'easy' ? 'OSON' : this.difficulty === 'medium' ? 'O\'RTA' : 'QIYIN';
+        this.ctx.fillText(`Qiyinlik: ${diffLabel}`, width / 2, height / 2 + 20);
+        this.ctx.fillText('O\'yinni boshlash uchun Start Game ni bosing', width / 2, height / 2 + 70);
     }
 
     drawGame() {
