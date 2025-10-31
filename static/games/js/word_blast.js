@@ -317,12 +317,5 @@ class WordBlast {
     }
 }
 
-// Initialize game
-let wordBlastGame;
-document.addEventListener('DOMContentLoaded', () => {
-    const difficulty = document.getElementById('gameCanvas')?.dataset.difficulty || 'medium';
-    wordBlastGame = new WordBlast('gameCanvas', difficulty);
-});
-
 // Expose to window
 window.WordBlast = WordBlast;
