@@ -313,12 +313,11 @@ class HistoryTimeline {
             this.ctx.lineWidth = 2;
             this.ctx.strokeRect(40, y, width - 80, eventHeight);
 
-            // Draw text
+            // Draw text (year hidden for difficulty)
             this.ctx.fillStyle = isSelected ? '#fff' : '#212529';
             this.ctx.font = isSelected ? 'bold 16px Arial' : '16px Arial';
             this.ctx.textAlign = 'left';
-            this.ctx.fillText(event.event, 60, y + 20);
-            this.ctx.fillText(`(${event.year})`, 60, y + 38);
+            this.ctx.fillText(event.event, 60, y + 28);
 
             // Draw selection number
             if (isSelected) {
