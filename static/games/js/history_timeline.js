@@ -259,7 +259,9 @@ class HistoryTimeline {
         this.ctx.textAlign = 'center';
         const instructionY = eventStartY + (this.currentEvents.length * (eventHeight + eventSpacing)) + 30;
         this.ctx.fillText(`Tanlangan: ${this.selectedOrder.length}/${this.currentEvents.length}`, width / 2, instructionY);
-        this.ctx.fillText('Yuborish uchun Enter yoki ortga qaytish uchun Backspace bosing', width / 2, instructionY + 25);
+        this.ctx.font = '12px Arial';
+        this.ctx.fillText('Hodisalarni bosing (tanlashni olib tashlash uchun yana bosing)', width / 2, instructionY + 25);
+        this.ctx.fillText('Tugmalar: Yuborish / Ortga Qaytarish', width / 2, instructionY + 40);
     }
 
     drawGameOver() {
