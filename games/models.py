@@ -10,9 +10,24 @@ def game_image_upload_path(instance, filename):
 
 
 class Game(models.Model):
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+    ]
+    CATEGORY_CHOICES = [
+        ('math', 'Math'),
+        ('geography', 'Geography'),
+        ('memory', 'Memory'),
+        ('word', 'Word/Language'),
+        ('puzzle', 'Puzzle'),
+        ('history', 'History'),
+    ]
+
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
+    description_uzbek = models.TextField(blank=True, help_text="Uzbek description of the game")
     image = models.ImageField(
         upload_to=game_image_upload_path,
         null=True,
@@ -20,6 +35,9 @@ class Game(models.Model):
         help_text="Upload game cover image (optimal size: 800x600px)"
     )
     is_active = models.BooleanField(default=True)
+    difficulty_level = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, null=True, blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True, blank=True)
+    icon = models.CharField(max_length=50, default='fa-gamepad', help_text="Font Awesome icon class")
 
     def save(self, *args, **kwargs):
         """Auto-generate slug if not provided"""
