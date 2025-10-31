@@ -52,8 +52,12 @@ class HistoryTimeline {
     resizeCanvas() {
         if (!this.canvas) return;
         const container = this.canvas.parentElement;
-        this.canvas.width = container.clientWidth;
-        this.canvas.height = container.clientHeight;
+        const width = container.clientWidth || 800;
+        const height = container.clientHeight || 600;
+        if (width > 0 && height > 0) {
+            this.canvas.width = width;
+            this.canvas.height = height;
+        }
     }
 
     setupEventListeners() {
